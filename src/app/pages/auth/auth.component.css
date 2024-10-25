@@ -140,6 +140,8 @@ form {
     padding: 8px 20px 8px 20px;
     gap: 10px;
     border-radius: 12px 12px 4px 12px;
+    align-self: flex-end;
+    margin-right: 25%;
   }
 
 }

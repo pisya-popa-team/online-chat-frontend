@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="content">
+    <section class="title-section">
+      <h1>Т.Т</h1>
+      <h2>Онлайн чат</h2>
+    </section>
+    <form (ngSubmit)="onSubmit()" [formGroup]="authForm" class="authorization-form">
+      <section class="form-title bubble">Авторизация</section>
+      <div class="form-group">
+        <input formControlName="email" id="email" placeholder="Почта" required type="email">
+        <input formControlName="password" id="password" placeholder="Пароль" required type="password">
+      </div>
+      <button class="submit-btn" type="submit"></button>
+      <section class="link bubble"><a href="/reg">У меня еще нет аккаунта</a></section>
+      <section class="link bubble"><a href="#">Я забыл пароль</a></section>
+    </form>
+  </div>
+</div>

@@ -34,3 +34,10 @@ a {
   text-decoration: none;
   background: none;
 }
+
+.bubble {
+  background: #C5F6FA33;
+  display: inline-block;
+  position: relative;
+  border: none;
+}
