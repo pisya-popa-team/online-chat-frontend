@@ -8,8 +8,9 @@
   --dark-80: #333333CC;
   --dark-60: #33333399;
   --link: #3BC9DB;
+  --link-hover: #3BC9DB99;
   --text: #fdfdfd;
-  --text-muted: #FFFFFF80;
+  --muted: #FFFFFF80;
   --brand: #0c8498;
   --brand-60: #0C849899;
   --brand-40: #0C849866;
@@ -38,6 +39,10 @@ a {
   color: var(--link);
   text-decoration: none;
   background: none;
+}
+
+a:hover {
+  color: var(--link-hover);
 }
 
 /*градиент для обводки*/

@@ -16,7 +16,7 @@
       <h1 class="text-32-38 font-extrabold">{{ title }}</h1>
       <a *ngIf="link.length > 0" href="{{link}}">{{ link_name }}</a>
     </section>
-    <p *ngIf="description.length > 0" class="text-text-muted text-14-17 pb-2 justify-self-end">{{ description }}</p>
+    <p *ngIf="description.length > 0" class="text-muted text-14-17 pb-2 justify-self-end">{{ description }}</p>
     <div
       class="relative bg-glass backdrop-blur-10 rounded-20 p-5 gap-4 border-2">
       <router-outlet></router-outlet>
