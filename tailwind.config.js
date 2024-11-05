@@ -29,7 +29,6 @@ module.exports = {
         sans: ["Inter", "sans-serif"],
       },
       fontSize: {
-        15: "15px",
         "15-18": ["15px", "18px"],
       },
       maxWidth: {

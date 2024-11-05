@@ -24,6 +24,7 @@
 * {
   color: var(--text);
   font-family: Inter, sans-serif;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -37,11 +38,4 @@ a {
   color: var(--link);
   text-decoration: none;
   background: none;
-}
-
-.bubble {
-  background: #C5F6FA33;
-  display: inline-block;
-  position: relative;
-  border: none;
 }
