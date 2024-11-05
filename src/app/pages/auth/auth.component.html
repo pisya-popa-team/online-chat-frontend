@@ -1,27 +1,19 @@
-<div class="w-screen h-screen bg-auth bg-cover">
-  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-    <section class="text-center pb-20">
-      <h1 class="text-2xl font-bold leading-9">Т.Т</h1>
-      <h2 class="text-xl font-semibold leading-6">Онлайн чат</h2>
-    </section>
-    <form (ngSubmit)="onSubmit()" [formGroup]="authForm"
-          class="relative flex flex-col items-center p-10 bg-glass max-w-form gap-2.5 backdrop-blur-lg rounded-20">
-      <section class="relative py-2 px-5 text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass mb-5">Авторизация
-      </section>
-      <input class="w-[400px] h-11 p-3 rounded-lg bg-dark-80 text-base font-normal leading-5" formControlName="email"
-             id="email"
-             placeholder="Почта" required type="email">
-      <input class="w-[400px] h-11 p-3 rounded-lg bg-dark-80 text-base font-normal leading-5" formControlName="password"
-             id="password" placeholder="Пароль" required type="password">
-      <button
-        class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand-60 active:bg-brand-40"
-        type="submit"></button>
-      <section
-        class="relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px] self-end mr-[25%]">
-        <a href="/reg">У меня еще нет аккаунта</a></section>
-      <section
-        class="relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px] self-end mr-[25%]">
-        <a href="#">Я забыл пароль</a></section>
-    </form>
-  </div>
-</div>
+<form (ngSubmit)="onSubmit()" [formGroup]="authForm"
+      class="relative flex flex-col items-center p-10 gap-2.5">
+  <section class="relative py-2 px-5 text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass mb-5">Авторизация
+  </section>
+  <input class="w-[400px] h-11 p-3 rounded-lg bg-dark-80 text-base font-normal leading-5" formControlName="email"
+         id="email"
+         placeholder="Почта" required type="email">
+  <input class="w-[400px] h-11 p-3 rounded-lg bg-dark-80 text-base font-normal leading-5" formControlName="password"
+         id="password" placeholder="Пароль" required type="password">
+  <button
+    class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand-60 active:bg-brand-40"
+    type="submit"></button>
+  <section
+    class="relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px] self-end mr-[25%]">
+    <a href="/auth/reg">У меня еще нет аккаунта</a></section>
+  <section
+    class="relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px] self-end mr-[25%]">
+    <a href="/auth/recovery">Я забыл пароль</a></section>
+</form>
