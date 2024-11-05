@@ -1,0 +1,26 @@
+<div class="w-screen h-screen bg-main bg-cover">
+  <div class="absolute top-10 left-[80px] flex flex-col items-center text-center">
+    <h2 class="text-32-38 font-bold">T.T</h2>
+    <h3 class="text-20-24 font-semibold">Онлайн чат</h3>
+  </div>
+  <button
+    class="absolute bottom-10 left-[80px] text-left bg-glass rounded-xl px-5 py-2.5 text-15-18 font-bold flex items-center gap-2.5">
+    username
+    <img alt="" class="w-8 h-8" src="/icons/logout.svg"/>
+  </button>
+  <div class="absolute bottom-10 right-[80px]">
+    <p>У нас есть <a href="#">правила</a></p>
+  </div>
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <section class="pb-20 text-center">
+      <h1 class="text-32-38 font-extrabold">{{ title }}</h1>
+      <a *ngIf="link.length > 0" href="{{link}}">{{ link_name }}</a>
+    </section>
+    <p *ngIf="description.length > 0" class="text-text-muted text-14-17 pb-2 justify-self-end">{{ description }}</p>
+    <div
+      class="relative bg-glass backdrop-blur-10 rounded-20 p-5 gap-4 border-2">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+</div>
