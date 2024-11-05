@@ -1,6 +1,7 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="authForm"
-      class="relative flex flex-col items-center p-10 gap-2.5">
-  <section class="relative py-2 px-5 text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass mb-5">Авторизация
+<form (ngSubmit)="onSubmit()" [formGroup]="authForm" class="relative flex flex-col items-center p-10 gap-2.5">
+  <section
+    class="gradient-border-br4 relative py-2 px-5 text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass mb-5">
+    Авторизация
   </section>
   <input class="w-[400px] h-11 p-3 rounded-lg bg-dark-80 text-base font-normal leading-5" formControlName="email"
          id="email"
@@ -11,9 +12,9 @@
     class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand-60 active:bg-brand-40"
     type="submit"></button>
   <section
-    class="relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px] self-end mr-[25%]">
+    class="gradient-border-12-br4 relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px] self-end mr-[25%]">
     <a href="/auth/reg">У меня еще нет аккаунта</a></section>
   <section
-    class="relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px] self-end mr-[25%]">
+    class="gradient-border-12-br4 relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px] self-end mr-[25%]">
     <a href="/auth/recovery">Я забыл пароль</a></section>
 </form>

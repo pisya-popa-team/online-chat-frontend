@@ -1,11 +1,12 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="registrationForm"
-      class="relative flex flex-col items-center p-10 gap-2.5">
-  <section class="relative py-2 px-5 text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass">
+<form (ngSubmit)="onSubmit()" [formGroup]="registrationForm" class="relative flex flex-col items-center p-10 gap-2.5">
+  <section class="gradient-border-br4 relative py-2 px-5 text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass">
     Регистрация
   </section>
-  <section class="max-w-fit-content py-3 px-5 rounded-[12px_12px_12px_4px] bg-glass mb-5">Регистрируясь на сайте вы
+  <section
+    class="relative gradient-border-12-bl4 text-15-18 font-normal max-w-fit-content py-3 px-5 rounded-[12px_12px_12px_4px] bg-glass mb-5">
+    Регистрируясь на сайте вы
     соглашаетесь с <a href="#">пользовательским
-      соглашением</a>, <a href="#">политикой конфиденциальности</a>, а также с нашими <a href="#">правилами</a>
+    соглашением</a>, <a href="#">политикой конфиденциальности</a>, а также с нашими <a href="#">правилами</a>
   </section>
   <input class="w-[400px] h-11 py-3 px-5 rounded-lg bg-dark-80 text-base font-normal leading-5"
          formControlName="username"
@@ -19,7 +20,8 @@
   <button
     class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand-60 active:bg-brand-40"
     type="submit"></button>
-  <section class="relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px]"><a href="/auth">У меня
+  <section class="gradient-border-12-br4 relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px]"><a href="/auth">У
+    меня
     уже есть аккаунт</a></section>
 </form>
 
