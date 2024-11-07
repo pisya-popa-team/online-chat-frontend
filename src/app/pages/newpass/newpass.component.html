@@ -3,16 +3,19 @@
     Восстановление доступа
   </section>
   <section
-    class="gradient-border-12-bl4 relative py-1 px-5 text-15-18 font-normal max-w-fit-content rounded-[12px_12px_12px_4px] bg-glass mb-5">
-    Введите почту,
-    привязанную
-    к вашему аккаунту, а мы отправить на неё данные для восстановления доступа
+    class="gradient-border-12-bl2 relative py-1 px-5 text-15-18 font-normal max-w-fit-content rounded-[12px_12px_12px_2px] bg-glass mb-5">
+    Придумайте новый пароль
   </section>
   <input
     class="w-[400px] h-11 p-3 rounded-lg bg-dark/80 text-base font-normal leading-5 placeholder-muted text-white focus:bg-dark focus:outline-none hover:bg-dark"
-    formControlName="email"
-    id="email"
-    placeholder="Почта" required type="email">
+    formControlName="new_password"
+    id="new_password"
+    placeholder="Пароль" required type="password">
+  <input
+    class="w-[400px] h-11 p-3 rounded-lg bg-dark/80 text-base font-normal leading-5 placeholder-muted text-white focus:bg-dark focus:outline-none hover:bg-dark"
+    formControlName="repeat_password"
+    id="repeat_password"
+    placeholder="Повторите пароль" required type="password">
   <button
     class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand/60 active:bg-brand/40"
     type="submit"></button>
