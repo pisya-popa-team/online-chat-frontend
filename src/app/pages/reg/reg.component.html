@@ -22,7 +22,8 @@
     formControlName="password"
     id="password" placeholder="Пароль" required type="password">
   <button
-    class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand/60 active:bg-brand/40"
+    [disabled]="isSubmitting"
+    class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand/60 active:bg-brand/40 disabled:bg-brand/40"
     type="submit"></button>
   <section class="gradient-border-12-br4 relative py-2 px-5 bg-glass rounded-[12px_12px_4px_12px]"><a href="/auth">У
     меня

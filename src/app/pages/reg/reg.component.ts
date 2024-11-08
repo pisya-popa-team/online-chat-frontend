@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { RegistrationService } from '../../services/registration.service';
 
 @Component({
   selector: 'app-reg',
@@ -18,6 +19,9 @@ export class RegComponent implements OnInit {
   registrationForm: FormGroup;
 
   toastrService = inject(ToastrService);
+  registrationService = inject(RegistrationService);
+
+  isSubmitting: boolean = false;
 
   constructor(private fb: FormBuilder) {}
 
@@ -47,7 +51,8 @@ export class RegComponent implements OnInit {
         );
       }
     } else {
-      console.log('Форма отправлена', this.registrationForm.value);
+      this.isSubmitting = true;
+      console.log('Форма валидна');
     }
   }
 }
