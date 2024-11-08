@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-reg',
@@ -16,21 +17,37 @@ import {
 export class RegComponent implements OnInit {
   registrationForm: FormGroup;
 
+  toastrService = inject(ToastrService);
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group({
-      nickname: ['', [Validators.required, Validators.minLength(3)]],
+      username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   onSubmit() {
-    if (this.registrationForm.valid) {
-      console.log(this.registrationForm.value);
+    if (this.registrationForm.invalid) {
+      const controls = this.registrationForm.controls;
+
+      if (controls['username'].invalid) {
+        this.toastrService.error(
+          'Псевдоним должен содержать не менее 3 символов',
+          'Ошибка',
+        );
+      } else if (controls['email'].invalid) {
+        this.toastrService.error('Введите корректный email', 'Ошибка');
+      } else if (controls['password'].invalid) {
+        this.toastrService.error(
+          'Пароль должен содержать не менее 6 символов',
+          'Ошибка',
+        );
+      }
     } else {
-      console.error('Форма недействительна');
+      console.log('Форма отправлена', this.registrationForm.value);
     }
   }
 }

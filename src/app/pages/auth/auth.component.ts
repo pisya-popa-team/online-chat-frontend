@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -15,6 +16,7 @@ import {
 })
 export class AuthComponent implements OnInit {
   authForm: FormGroup;
+  toastrService = inject(ToastrService);
 
   constructor(private fb: FormBuilder) {}
 
@@ -27,6 +29,7 @@ export class AuthComponent implements OnInit {
 
   onSubmit() {
     if (this.authForm.valid) {
+      //todo: toastr error message
       console.log(this.authForm.value);
     } else {
       console.error('Форма недействительна');
