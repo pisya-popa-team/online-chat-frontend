@@ -12,4 +12,8 @@ export class AuthService {
   register(data: FormData): Observable<any> {
     return this.httpClient.post<string>(this.api + 'reg', data);
   }
+
+  auth(data: FormData): Observable<any> {
+    return this.httpClient.post<string>(this.api + 'auth', data);
+  }
 }
