@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class RegistrationService {
-  readonly api = '';
+  readonly api = 'https://api-tt-chat.danyatochka.ru/';
 
   httpClient = inject(HttpClient);
 }
