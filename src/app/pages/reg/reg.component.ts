@@ -19,7 +19,7 @@ export class RegComponent implements OnInit {
   registrationForm: FormGroup;
 
   toastrService = inject(ToastrService);
-  registrationService = inject(AuthService);
+  authService = inject(AuthService);
 
   isSubmitting: boolean = false;
 
@@ -57,7 +57,7 @@ export class RegComponent implements OnInit {
       formData.append('email', this.registrationForm.value.email);
       formData.append('password', this.registrationForm.value.password);
       console.log(formData);
-      this.registrationService.register(formData).subscribe({
+      this.authService.register(formData).subscribe({
         next: () => {
           this.toastrService.success('Регистрация успешна');
           this.registrationForm.reset();
