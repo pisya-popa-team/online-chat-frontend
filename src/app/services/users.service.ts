@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
 import { IUser } from '../models/user';
 import { ITokens } from '../models/tokens';
-import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,20 +15,6 @@ export class UsersService {
     status: number;
     tokens: ITokens;
   } | null>(null);
-
-  constructor(apiService: ApiService) {
-    apiService.refreshToken().subscribe({
-      next: (tokens) => {
-        localStorage.setItem('accessToken', tokens.tokens.access_token);
-        localStorage.setItem('refreshToken', tokens.tokens.refresh_token);
-        this.tokenSubject.next(tokens);
-      },
-      error: (error) => {
-        console.error('Error refreshing token', error);
-        this.tokenSubject.next(null);
-      },
-    });
-  }
 
   getCurrentUser(): Observable<{ status: string; user: IUser }> {
     return this.tokenSubject.pipe(

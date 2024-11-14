@@ -24,13 +24,15 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     req = req.clone();
 
+    const url = new URL(req.url);
+    if (['/auth', '/reg'].some((i) => i == url.pathname)) {
+      return next.handle(req);
+    }
+
     return next.handle(req).pipe(
       catchError((error) => {
-        if (
-          error instanceof HttpErrorResponse &&
-          (error.status === 401 ||
-            error.error.message === 'missing or malformed jwt')
-        ) {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          console.log('ERROR:', error);
           return this.handle401Error(req, next);
         }
 
