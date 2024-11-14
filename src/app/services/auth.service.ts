@@ -29,4 +29,8 @@ export class AuthService {
       tokens: { access_token: string; refresh_token: string };
     }>(this.api + 'auth', data);
   }
+
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('accessToken');
+  }
 }

@@ -5,9 +5,10 @@ import { RecoveryComponent } from './pages/recovery/recovery.component';
 import { BasicComponent } from './shared/layout/basic/basic.component';
 import { LoginComponent } from './shared/layout/login/login.component';
 import { NewpassComponent } from './pages/newpass/newpass.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: BasicComponent },
+  { path: '', component: BasicComponent, canActivate: [authGuard] },
   {
     path: 'auth',
     component: LoginComponent,
