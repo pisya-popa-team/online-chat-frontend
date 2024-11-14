@@ -26,7 +26,7 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
     this.authForm = this.fb.group({
-      username: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
   }
@@ -37,7 +37,7 @@ export class AuthComponent implements OnInit {
     } else {
       this.isSubmitting = true;
       const formData = new FormData();
-      formData.append('username', this.authForm.value.username);
+      formData.append('email', this.authForm.value.email);
       formData.append('password', this.authForm.value.password);
       console.log(formData);
       this.authService.auth(formData).subscribe({
@@ -48,12 +48,13 @@ export class AuthComponent implements OnInit {
           //todo: redirect
         },
         error: (error) => {
+          //todo: проверка кода ошибки
           if (
             error.error == 'invalid username' ||
             error.error == 'invalid password'
           ) {
             this.toastrService.error(
-              'Неверный логин или пароль',
+              'Неверная почта или пароль',
               'Ошибка авторизации',
             );
           } else {
