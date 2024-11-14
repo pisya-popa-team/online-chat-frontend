@@ -10,7 +10,9 @@ export class AuthService {
   httpClient = inject(HttpClient);
 
   register(data: FormData): Observable<any> {
-    return this.httpClient.post<string>(this.api + 'reg', data);
+    return this.httpClient.post<string>(this.api + 'reg', data, {
+      withCredentials: true,
+    });
   }
 
   auth(data: FormData): Observable<any> {

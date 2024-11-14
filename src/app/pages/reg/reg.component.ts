@@ -64,8 +64,18 @@ export class RegComponent implements OnInit {
           this.isSubmitting = false;
         },
         error: (error) => {
-          this.toastrService.error(error.message, 'Ошибка регистрации');
-          console.error(error);
+          if (
+            error.error ==
+            "Key: 'User.Password' Error:Field validation for 'Password' failed on the 'password' tag"
+          ) {
+            this.toastrService.error(
+              'Пароль должен содержать не менее 7 символов, заглавные буквы, цифры и спец. символы',
+              'Ошибка регистрации',
+            );
+          } else {
+            this.toastrService.error(error.message, 'Ошибка регистрации');
+            console.error(error);
+          }
           this.isSubmitting = false;
         },
       });
