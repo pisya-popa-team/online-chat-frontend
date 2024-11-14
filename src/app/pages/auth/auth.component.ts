@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -21,6 +22,7 @@ export class AuthComponent implements OnInit {
 
   toastrService = inject(ToastrService);
   authService = inject(AuthService);
+  router = inject(Router);
 
   constructor(private fb: FormBuilder) {}
 
@@ -41,18 +43,15 @@ export class AuthComponent implements OnInit {
       formData.append('password', this.authForm.value.password);
       console.log(formData);
       this.authService.auth(formData).subscribe({
-        next: () => {
-          this.toastrService.success('Авторизация успешна');
+        next: (user) => {
           this.authForm.reset();
           this.isSubmitting = false;
-          //todo: redirect
+          localStorage.setItem('accessToken', user.tokens.access_token);
+          localStorage.setItem('refreshToken', user.tokens.refresh_token);
+          this.router.navigate(['/']);
         },
         error: (error) => {
-          //todo: проверка кода ошибки
-          if (
-            error.error == 'invalid username' ||
-            error.error == 'invalid password'
-          ) {
+          if (error.status === 401) {
             this.toastrService.error(
               'Неверная почта или пароль',
               'Ошибка авторизации',
