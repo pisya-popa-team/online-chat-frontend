@@ -19,4 +19,14 @@ export class AuthService {
       data,
     );
   }
+
+  auth(data: FormData): Observable<{
+    status: string;
+    tokens: { access_token: string; refresh_token: string };
+  }> {
+    return this.httpClient.post<{
+      status: string;
+      tokens: { access_token: string; refresh_token: string };
+    }>(this.api + 'auth', data);
+  }
 }
