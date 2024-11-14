@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reg',
@@ -20,8 +21,9 @@ export class RegComponent implements OnInit {
 
   toastrService = inject(ToastrService);
   registrationService = inject(AuthService);
+  router = inject(Router);
 
-  isSubmitting: boolean = false;
+  isSubmitting = false;
 
   constructor(private fb: FormBuilder) {}
 
@@ -46,7 +48,7 @@ export class RegComponent implements OnInit {
         this.toastrService.error('Введите корректный email', 'Ошибка');
       } else if (controls['password'].invalid) {
         this.toastrService.error(
-          'Пароль должен содержать не менее 7 символов',
+          'Пароль должен содержать не менее 7 символов, заглавные буквы, цифры и спец. символы',
           'Ошибка',
         );
       }
@@ -56,20 +58,25 @@ export class RegComponent implements OnInit {
       formData.append('username', this.registrationForm.value.username);
       formData.append('email', this.registrationForm.value.email);
       formData.append('password', this.registrationForm.value.password);
-      console.log(formData);
       this.registrationService.register(formData).subscribe({
-        next: () => {
+        next: (user) => {
           this.toastrService.success('Регистрация успешна');
           this.registrationForm.reset();
           this.isSubmitting = false;
+
+          localStorage.setItem('accessToken', user.tokens.access_token);
+          localStorage.setItem('refreshToken', user.tokens.refresh_token);
+          this.router.navigate(['']);
         },
         error: (error) => {
-          if (
-            error.error ==
-            "Key: 'User.Password' Error:Field validation for 'Password' failed on the 'password' tag"
-          ) {
+          if (error.status === 422) {
             this.toastrService.error(
               'Пароль должен содержать не менее 7 символов, заглавные буквы, цифры и спец. символы',
+              'Ошибка регистрации',
+            );
+          } else if (error.status === 409) {
+            this.toastrService.error(
+              'Пользователь с таким именем или почтой уже существует',
               'Ошибка регистрации',
             );
           } else {
