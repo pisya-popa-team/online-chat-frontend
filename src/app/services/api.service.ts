@@ -13,8 +13,11 @@ export class ApiService {
   refreshToken(): Observable<{ status: number; tokens: ITokens }> {
     return this.httpClient.post<{ status: number; tokens: ITokens }>(
       this.api + 'refresh',
+      {},
       {
-        refresh_token: localStorage.getItem('refreshToken'),
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('refreshToken'),
+        },
       },
     );
   }
