@@ -25,7 +25,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     req = req.clone();
 
     const url = new URL(req.url);
-    if (['/auth', '/reg'].some((i) => i == url.pathname)) {
+    if (['/auth', '/reg', '/refresh/tokens'].some((i) => i == url.pathname)) {
       return next.handle(req);
     }
 
@@ -33,6 +33,20 @@ export class HttpRequestInterceptor implements HttpInterceptor {
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
           return this.handle401Error(req, next);
+        }
+
+        if (
+          error instanceof HttpErrorResponse &&
+          error.status >= 400 &&
+          error.status < 500
+        ) {
+          console.log('Client error occurred');
+          return throwError(() => error);
+        }
+
+        if (error instanceof HttpErrorResponse && error.status >= 500) {
+          console.log('Server error occurred');
+          return throwError(() => error);
         }
 
         return throwError(() => error);

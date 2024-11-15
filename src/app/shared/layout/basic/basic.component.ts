@@ -33,10 +33,26 @@ export class BasicComponent implements OnInit {
     this.users.getCurrentUser().subscribe({
       next: (response) => {
         this.user = response.user;
+        if (this.user) {
+          localStorage.setItem('user', JSON.stringify(this.user));
+        }
       },
       error: (error) => {
         console.error(error);
       },
     });
+
+    if (!this.user) {
+      const _user = localStorage.getItem('user');
+      this.user = _user
+        ? JSON.parse(_user)
+        : {
+            ID: 0,
+            Username: '',
+            Email: '',
+            Password: { ID: 0, hash: '', UserId: 0 },
+            Room: [],
+          };
+    }
   }
 }

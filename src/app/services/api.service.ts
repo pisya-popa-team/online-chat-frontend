@@ -10,9 +10,9 @@ export class ApiService {
   readonly api = import.meta.env.NG_APP_API;
   httpClient = inject(HttpClient);
 
-  refreshToken(): Observable<{ status: number; tokens: ITokens }> {
-    return this.httpClient.post<{ status: number; tokens: ITokens }>(
-      this.api + 'refresh',
+  refreshToken(): Observable<{ status: string; tokens: ITokens }> {
+    return this.httpClient.post<{ status: string; tokens: ITokens }>(
+      this.api + 'refresh/tokens',
       {},
       {
         headers: {
