@@ -50,7 +50,6 @@ export class BasicComponent implements OnInit {
             ID: 0,
             Username: '',
             Email: '',
-            Password: { ID: 0, hash: '', UserId: 0 },
             Room: [],
           };
     }
