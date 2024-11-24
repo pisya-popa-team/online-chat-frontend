@@ -8,18 +8,13 @@
   </div>
   <button class="bg-dark/80 py-2.5 px-4 rounded-xl text-text font-medium text-16-20">Создать</button>
 </section>
-<section class="flex flex-col gap-2">
-  <app-room [lastMessage]="{
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    sender: 'username',
-  }" [roomId]="String(1337)" [roomPin]="true" [unreadMessagesCount]="20">
-  </app-room>
+<section *ngIf="rooms.length > 0" class="flex flex-col gap-2">
+  <ng-container *ngIf="pinnedRooms.length > 0">
+    <app-room *ngFor="let room of pinnedRooms" [lastMessage]="room.lastMessage" [roomId]="room.ID.toString()"
+              [roomLock]="room.locked" [roomPin]="room.pinned"></app-room>
+    <hr class="border-brand/40 border-2">
+  </ng-container>
 
-  <app-room [roomId]="String(1345)" [roomLock]="true" [roomPin]="true"></app-room>
-  <app-room [lastMessage]="{
-    content:
-      'Lorem ipsum dolor sit amet.',
-    sender: '(You)',
-  }" [roomId]="String(321)" [unreadMessagesCount]="5"></app-room>
+  <app-room *ngFor="let room of otherRooms" [lastMessage]="room.lastMessage" [roomId]="room.ID.toString()"
+            [roomLock]="room.locked" [roomPin]="room.pinned"></app-room>
 </section>

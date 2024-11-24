@@ -33,6 +33,12 @@ module.exports = {
       },
       maxHeight: {
         5.25: "1.313rem",
+        195: "47.5rem",
+        200: "50rem",
+      },
+      minHeight: {
+        90: "22.5rem",
+        100: "25rem",
       },
       borderRadius: {
         20: "1.25rem",
