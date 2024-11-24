@@ -1,0 +1,25 @@
+<section class="flex flex-row gap-3 h-10 mb-4">
+  <div
+    class="flex flex-row gap-3 bg-brand/10 rounded-xl border-2 py-2.5 px-3 border-brand flex-grow">
+    <img class="h-3.75 w-3.75" src="/icons/search.svg">
+    <input
+      class="bg-transparent border-none p-0 m-0 focus:border-none focus:outline-none active:border-none flex-grow"
+      placeholder="Найти рум" type="text">
+  </div>
+  <button class="bg-dark/80 py-2.5 px-4 rounded-xl text-text font-medium text-16-20">Создать</button>
+</section>
+<section class="flex flex-col gap-2">
+  <app-room [lastMessage]="{
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    sender: 'username',
+  }" [roomId]="String(1337)" [roomPin]="true" [unreadMessagesCount]="20">
+  </app-room>
+
+  <app-room [roomId]="String(1345)" [roomLock]="true" [roomPin]="true"></app-room>
+  <app-room [lastMessage]="{
+    content:
+      'Lorem ipsum dolor sit amet.',
+    sender: '(You)',
+  }" [roomId]="String(321)" [unreadMessagesCount]="5"></app-room>
+</section>
