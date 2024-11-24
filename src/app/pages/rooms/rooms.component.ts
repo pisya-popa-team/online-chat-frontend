@@ -118,12 +118,19 @@ export class RoomsComponent implements OnInit {
       },
     ];
 
+    this.rooms = [];
+
     this.pinnedRooms = this.rooms.filter((room) => room.pinned);
     this.otherRooms = this.rooms.filter((room) => !room.pinned);
 
+    let desc =
+      this.rooms.length > 0
+        ? 'тотал ' + this.rooms.length + ' румов'
+        : 'создай первый рум';
+
     this.stateService.setState({
       title: 'Румы',
-      description: 'тотал ' + this.rooms.length + ' румов',
+      description: desc,
     });
   }
 }
