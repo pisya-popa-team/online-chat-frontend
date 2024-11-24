@@ -80,3 +80,12 @@ a:hover {
 .gradient-border-12-bl2::before {
   border-radius: 12px 12px 12px 2px;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

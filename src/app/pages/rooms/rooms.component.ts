@@ -15,8 +15,13 @@ export class RoomsComponent implements OnInit {
   rooms: IRoom[];
   pinnedRooms: IRoom[];
   otherRooms: IRoom[];
+  createToggle: boolean = false;
   protected readonly String = String;
   private stateService = inject(StateService);
+
+  toggleCreate(value: boolean) {
+    this.createToggle = value;
+  }
 
   ngOnInit(): void {
     //todo: получение комнат

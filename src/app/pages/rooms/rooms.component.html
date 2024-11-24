@@ -6,8 +6,23 @@
       class="bg-transparent border-none p-0 m-0 focus:border-none focus:outline-none active:border-none flex-grow"
       placeholder="Найти рум" type="text">
   </div>
-  <button class="bg-dark/80 py-2.5 px-4 rounded-xl text-text font-medium text-16-20">Создать</button>
+  <button (click)="toggleCreate(true)" class="bg-dark/80 py-2.5 px-4 rounded-xl text-text font-medium text-16-20">
+    Создать
+  </button>
 </section>
+<div (click)="toggleCreate(false)" *ngIf="createToggle" class="fixed bg-none top-0 right-0 left-0 bottom-0 z-40"></div>
+<div *ngIf="createToggle"
+     class="fixed z-50 right-5 top-18 bg-darkBrand/20 backdrop-blur-10 shadow-modal px-3 py-2 rounded-20 rounded-tr-xs flex flex-col gap-1 border-2 border-white items-center">
+  <button
+    class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-between cursor-pointer">
+    <img
+      src="/icons/public.svg">Публичный
+  </button>
+  <button class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-between cursor-pointer">
+    <img
+      src="/icons/private.svg">Приватный
+  </button>
+</div>
 <section *ngIf="rooms && rooms.length > 0" class="flex flex-col gap-2">
   <ng-container *ngIf="pinnedRooms.length > 0">
     <app-room *ngFor="let room of pinnedRooms" [lastMessage]="room.lastMessage" [roomId]="room.ID.toString()"
