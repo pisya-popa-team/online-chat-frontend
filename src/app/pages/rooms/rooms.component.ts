@@ -16,11 +16,20 @@ export class RoomsComponent implements OnInit {
   pinnedRooms: IRoom[];
   otherRooms: IRoom[];
   createToggle: boolean = false;
+  isCreating: boolean = false;
+  createType: 'public' | 'private' | null = null;
   protected readonly String = String;
   private stateService = inject(StateService);
 
   toggleCreate(value: boolean) {
     this.createToggle = value;
+  }
+
+  createRoom(createType: 'public' | 'private') {
+    this.isCreating = true;
+    this.createType = createType;
+
+    //todo: создание комнаты
   }
 
   ngOnInit(): void {

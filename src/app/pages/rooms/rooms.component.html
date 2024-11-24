@@ -13,14 +13,23 @@
 <div (click)="toggleCreate(false)" *ngIf="createToggle" class="fixed bg-none top-0 right-0 left-0 bottom-0 z-40"></div>
 <div *ngIf="createToggle"
      class="fixed z-50 right-5 top-18 bg-darkBrand/20 backdrop-blur-10 shadow-modal px-3 py-2 rounded-20 rounded-tr-xs flex flex-col gap-1 border-2 border-white items-center">
-  <button
-    class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-between cursor-pointer">
+  <button *ngIf="!isCreating"
+          class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-center cursor-pointer  w-full">
     <img
       src="/icons/public.svg">Публичный
   </button>
-  <button class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-between cursor-pointer">
+  <button (click)="createRoom('private')"
+          *ngIf="!isCreating"
+          class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-center cursor-pointer  w-full">
     <img
       src="/icons/private.svg">Приватный
+  </button>
+  <input *ngIf="isCreating && createType=='private'" class="bg-dark rounded-lg px-5 py-3 text-center w-full"
+         id="room_pass" placeholder="Пароль для входа">
+  <button *ngIf="isCreating && createType=='private'"
+          class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-center cursor-pointer w-full">
+    <img
+      src="/icons/private.svg">Создать
   </button>
 </div>
 <section *ngIf="rooms && rooms.length > 0" class="flex flex-col gap-2">
