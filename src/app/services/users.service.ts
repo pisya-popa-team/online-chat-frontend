@@ -32,12 +32,13 @@ export class UsersService {
     );
   }
 
-  getUser(id: number): Observable<{ status: string; user: IUser }> {
+  updateUser(data: FormData): Observable<{ status: string; user: IUser }> {
     return this.tokenSubject.pipe(
       take(1),
       switchMap((token) => {
-        return this.httpClient.get<{ status: string; user: IUser }>(
-          this.api + 'access/users/' + id,
+        return this.httpClient.patch<{ status: string; user: IUser }>(
+          this.api + 'access/users',
+          data,
           {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
