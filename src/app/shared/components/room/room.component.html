@@ -8,9 +8,10 @@
     </div>
   </section>
   <section *ngIf="lastMessage.content.length != 0" class="flex flex-row gap-3 items-center mt-2.5 justify-between">
-    <div class="flex flex-row gap-3 items-center overflow-ellipsis whitespace-nowrap overflow-hidden">
-      <p class="font-semibold text-16-20">{{ lastMessage.sender }}</p>
-      <p class="font-normal text-16-20">{{ lastMessage.content }}</p>
+    <div class="flex flex-row gap-3 items-center whitespace-nowrap overflow-hidden overflow-ellipsis">
+      <p class="font-medium text-16-20">{{ lastMessage.sender }}</p>
+      <p
+        class="font-normal text-16-20">{{ lastMessage.content }}</p>
     </div>
     <p *ngIf="unreadMessagesCount > 0"
        class="bg-white px-2 py-0.5 rounded-max text-brand font-normal text-14-17 gap-10 justify-self-end">

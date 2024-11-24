@@ -1,9 +1,9 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { IUser } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
-import { ApiService } from '../../../services/api.service';
+import { StateService } from '../../../services/state.service';
 
 @Component({
   selector: 'app-basic',
@@ -13,12 +13,12 @@ import { ApiService } from '../../../services/api.service';
   styleUrl: './basic.component.css',
 })
 export class BasicComponent implements OnInit {
-  @Input() title: string = '';
-  @Input() link: string = '';
-  @Input() link_name: string = '';
-  @Input() description: string = '';
+  title: string = '';
+  description: string = '';
+  link: string = '';
+  linkName: string = '';
 
-  api = inject(ApiService);
+  stateService = inject(StateService);
   users = inject(UsersService);
   router = inject(Router);
   user?: IUser;
@@ -30,6 +30,13 @@ export class BasicComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.stateService.state$.subscribe((state) => {
+      this.title = state.title;
+      this.description = state.description;
+      this.link = state.link;
+      this.linkName = state.linkName;
+    });
+
     this.users.getCurrentUser().subscribe({
       next: (response) => {
         this.user = response.user;
