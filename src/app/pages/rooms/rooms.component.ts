@@ -118,7 +118,8 @@ export class RoomsComponent implements OnInit {
       },
     ];
 
-    this.rooms = [];
+    // тест без комнат
+    // this.rooms = [];
 
     this.pinnedRooms = this.rooms.filter((room) => room.pinned);
     this.otherRooms = this.rooms.filter((room) => !room.pinned);
