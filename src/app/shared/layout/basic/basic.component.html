@@ -15,13 +15,12 @@
   <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
     <section class="pb-20 text-center">
       <h1 class="text-32-38 font-extrabold">{{ title }}</h1>
-      <a *ngIf="link.length > 0" href="{{link}}">{{ link_name }}</a>
+      <a *ngIf="link.length > 0" href="{{link}}">{{ linkName }}</a>
     </section>
     <p *ngIf="description.length > 0" class="text-muted text-14-17 pb-2 justify-self-end">{{ description }}</p>
     <div
-      class="relative bg-glass backdrop-blur-10 rounded-20 p-5 gap-4 border-2">
+      class="relative bg-glass backdrop-blur-10 rounded-20 p-5 gap-4 border-2 min-h-100 max-h-200 overflow-scroll no-scrollbar">
       <router-outlet></router-outlet>
     </div>
   </div>
-
 </div>

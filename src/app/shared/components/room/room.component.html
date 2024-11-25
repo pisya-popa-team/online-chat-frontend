@@ -1,0 +1,21 @@
+<div class="bg-brand/40 rounded-20 px-5 py-4 cursor-pointer max-w-25">
+  <section class="flex flex-row justify-between">
+    <h3 class="text-text font-semibold text-16-20">Рум #{{ roomId }}</h3>
+    <div class="flex flex-row gap-0.5 items-center">
+      <img *ngIf="roomPin" class="h-3.25 w-3.25" src="/icons/pin.svg">
+      <img *ngIf="roomLock" class="h-3.25 w-3.25" src="/icons/lock.svg">
+      <p class="font-normal text-14-17">10.10.12 13:14</p>
+    </div>
+  </section>
+  <section *ngIf="lastMessage" class="flex flex-row gap-3 items-center mt-2.5 justify-between">
+    <div class="flex flex-row gap-3 items-center whitespace-nowrap overflow-hidden overflow-ellipsis">
+      <p class="font-medium text-16-20">{{ lastMessage.sender }}</p>
+      <p
+        class="font-normal text-16-20">{{ lastMessage.content }}</p>
+    </div>
+    <p *ngIf="unreadMessagesCount > 0"
+       class="bg-white px-2 py-0.5 rounded-max text-brand font-normal text-14-17 gap-10 justify-self-end">
+      {{ getUnreadMessagesCount() }}
+    </p>
+  </section>
+</div>
