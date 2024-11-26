@@ -16,10 +16,11 @@ export const routes: Routes = [
     children: [{ path: '', component: RoomsComponent }],
   },
   {
-    path: 'auth',
+    path: '',
     component: LoginComponent,
+    canDeactivate: [authGuard],
     children: [
-      { path: '', component: AuthComponent },
+      { path: 'auth', component: AuthComponent },
       { path: 'reg', component: RegComponent },
       { path: 'recovery', component: RecoveryComponent },
       { path: 'newpass', component: NewpassComponent },

@@ -30,6 +30,24 @@ export class AuthService {
     }>(this.api + 'auth', data);
   }
 
+  recoveryEmail(
+    data: FormData,
+  ): Observable<{ message: string; status: string }> {
+    return this.httpClient.post<{ message: string; status: string }>(
+      this.api + 'recovery',
+      data,
+    );
+  }
+
+  recoveryPassword(
+    data: FormData,
+  ): Observable<{ message: string; status: string }> {
+    return this.httpClient.patch<{ message: string; status: string }>(
+      this.api + 'recovery',
+      data,
+    );
+  }
+
   isAuthenticated(): boolean {
     return !!localStorage.getItem('accessToken');
   }
