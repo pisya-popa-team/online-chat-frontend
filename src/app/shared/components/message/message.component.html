@@ -1,0 +1,20 @@
+<div [ngClass]="{'justify-end':messageType == 'user'}" class="flex flex-row mb-2.5">
+  <div>
+    <section [ngClass]="{
+    'bg-message1/20':messageType == 'user',
+    'bg-message0/20':messageType == 'message',
+    'border-message1':messageType == 'user',
+    'border-message0':messageType == 'message',
+    'rounded-br-lg':messageType == 'user',
+    'rounded-bl-lg':messageType == 'message',
+    'max-w-screen-sm w-fit rounded-20 py-2 px-5 gap-0.5 border-2': messageType !='system',
+    }" class="mb-0.5">
+      <p class="text-16-20 font-normal">{{ content }}</p>
+    </section>
+    <section *ngIf="messageType != 'system'" [ngClass]="{'justify-end':messageType == 'user'}"
+             class="flex flex-row gap-2.5 items-baseline">
+      <p class="text-14-17 font-normal text-muted">{{ dateTime }}</p>
+      <p *ngIf="messageType == 'message'" class="text-15-18 font-semibold text-muted">{{ sender }}</p>
+    </section>
+  </div>
+</div>

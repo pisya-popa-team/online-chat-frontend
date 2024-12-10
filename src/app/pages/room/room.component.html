@@ -1,0 +1,6 @@
+<div class="h-186 w-200">
+  <section>
+    <app-message *ngFor="let msg of messages; index as i" [content]="msg.content" [dateTime]="msg.date"
+                 [messageType]="senders[i]" [sender]="msg.sender"></app-message>
+  </section>
+</div>
