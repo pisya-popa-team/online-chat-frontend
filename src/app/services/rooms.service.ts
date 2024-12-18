@@ -69,15 +69,13 @@ export class RoomsService {
     );
   }
 
-  createRoom(password = ''): Observable<{ room: IRoom; status: string }> {
-    let body = password !== '' ? { password: password } : {};
-
+  createRoom(data: FormData): Observable<{ room: IRoom; status: string }> {
     return this.tokenSubject.pipe(
       take(1),
       switchMap((token) => {
         return this.httpClient.post<{ room: IRoom; status: string }>(
           this.api + 'access/rooms',
-          body,
+          data,
           {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('accessToken'),

@@ -38,15 +38,17 @@ export class RoomsComponent implements OnInit {
   }
 
   createRoom() {
-    if (this.createType === 'private' && this.newRoomPassword.length < 7) {
-      this.toastrService.error(
-        'Пароль должен содержать не менее 7 символов',
-        'Ошибка',
-      );
+    if (this.createType === 'private' && this.newRoomPassword.length < 1) {
+      this.toastrService.error('Пароль не может быть пустым', 'Ошибка');
       return;
     }
 
-    this.roomsService.createRoom(this.newRoomPassword).subscribe({
+    let formData = new FormData();
+    if (this.newRoomPassword) {
+      formData.append('password', this.newRoomPassword);
+    }
+
+    this.roomsService.createRoom(formData).subscribe({
       next: (response) => {
         this.isCreating = false;
         this.refreshRooms();
