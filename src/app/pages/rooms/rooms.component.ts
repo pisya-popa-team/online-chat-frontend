@@ -85,8 +85,13 @@ export class RoomsComponent implements OnInit {
   ngOnInit(): void {
     this.refreshRooms();
 
-    // this.pinnedRooms = this.rooms.filter((room) => room.pinned);
-    // this.otherRooms = this.rooms.filter((room) => !room.pinned);
+    let pinnedIDs: number[] = [];
+    let pinnedIDsString = localStorage.getItem('pinnedIDs');
+    if (pinnedIDsString) {
+      pinnedIDs = JSON.parse(pinnedIDsString);
+    }
+    this.pinnedRooms = this.rooms.filter((room) => pinnedIDs.includes(room.ID));
+    this.otherRooms = this.rooms.filter((room) => !pinnedIDs.includes(room.ID));
 
     let desc =
       this.rooms.length > 0
