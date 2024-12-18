@@ -1,0 +1,90 @@
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
+import { IMessage, IRoom } from '../models/room';
+import { ITokens } from '../models/tokens';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class RoomsService {
+  readonly api = import.meta.env.NG_APP_API;
+  httpClient = inject(HttpClient);
+
+  private tokenSubject = new BehaviorSubject<{
+    status: number;
+    tokens: ITokens;
+  } | null>(null);
+
+  getRooms(): Observable<{ rooms: IRoom[]; status: string }> {
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.get<{ rooms: IRoom[]; status: string }>(
+          this.api + 'access/rooms',
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
+
+  getRoomsByName(name: string): Observable<{ rooms: IRoom[]; status: string }> {
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.get<{ rooms: IRoom[]; status: string }>(
+          this.api + `access/rooms/${name}`,
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
+
+  getMessages(
+    id: number,
+    limit = -1,
+    offset = -1,
+  ): Observable<{ messages: IMessage[]; status: string }> {
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.get<{ messages: IMessage[]; status: string }>(
+          this.api +
+            `access/rooms/${id}/messages?limit=${limit}&offset=${offset}`,
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
+
+  createRoom(password = ''): Observable<{ room: IRoom; status: string }> {
+    let body = password !== '' ? { password: password } : {};
+
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.post<{ room: IRoom; status: string }>(
+          this.api + 'access/rooms',
+          body,
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
+}

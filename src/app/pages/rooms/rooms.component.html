@@ -13,20 +13,21 @@
 <div (click)="toggleCreate(false)" *ngIf="createToggle" class="fixed bg-none top-0 right-0 left-0 bottom-0 z-40"></div>
 <div *ngIf="createToggle"
      class="fixed z-50 right-5 top-18 bg-darkBrand/20 backdrop-blur-10 shadow-modal px-3 py-2 rounded-20 rounded-tr-xs flex flex-col gap-1 border-2 border-white items-center">
-  <button *ngIf="!isCreating"
+  <button (click)="createRoom()" *ngIf="!isCreating"
           class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-center cursor-pointer  w-full">
     <img
       src="/icons/public.svg">Публичный
   </button>
-  <button (click)="createRoom('private')"
+  <button (click)="setRoomPassword()"
           *ngIf="!isCreating"
           class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-center cursor-pointer  w-full">
     <img
       src="/icons/private.svg">Приватный
   </button>
-  <input *ngIf="isCreating && createType=='private'" class="bg-dark rounded-lg px-5 py-3 text-center w-full"
+  <input *ngIf="isCreating && createType=='private'" [(ngModel)]="newRoomPassword"
+         class="bg-dark rounded-lg px-5 py-3 text-center w-full"
          id="room_pass" placeholder="Пароль для входа">
-  <button *ngIf="isCreating && createType=='private'"
+  <button (click)="createRoom()" *ngIf="isCreating && createType=='private'"
           class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-center cursor-pointer w-full">
     <img
       src="/icons/private.svg">Создать
@@ -34,24 +35,28 @@
 </div>
 <section *ngIf="rooms && rooms.length > 0" class="flex flex-col gap-2">
   <ng-container *ngIf="pinnedRooms.length > 0">
-    <app-room *ngFor="let room of pinnedRooms" [lastMessage]="room.lastMessage" [roomId]="room.ID.toString()"
-              [roomLock]="room.locked" [roomPin]="room.pinned"></app-room>
+    <app-room *ngFor="let room of pinnedRooms; let i = index" [lastMessage]="messages[i][messages[i].length - 1]"
+              [roomName]="room.Name"
+              [roomPin]="true" [roomType]="room.RoomType"></app-room>
     <hr class="border-brand/40 border-2">
   </ng-container>
 
-  <app-room *ngFor="let room of otherRooms" [lastMessage]="room.lastMessage" [roomId]="room.ID.toString()"
-            [roomLock]="room.locked" [roomPin]="room.pinned"></app-room>
+  <app-room *ngFor="let room of otherRooms; let i = index" [lastMessage]="messages[i][messages[i].length - 1]"
+            [roomName]="room.Name"
+            [roomPin]="false" [roomType]="room.RoomType"></app-room>
 </section>
 <section *ngIf="!rooms || rooms.length == 0" class="flex flex-col gap-2 items-center px-20">
   <img class="h-7 w-7" src="/icons/ghost.svg">
   <p class="font-normal text-14-17">Кажется, здесь пусто...</p>
   <p class="font-semibold text-16-20">Но ты можешь <span class="text-brand">это исправить</span>!</p>
   <p class="font-medium text-14-17">Прямо сейчас ты можешь создать</p>
-  <button class="bg-dark/80 rounded-xl px-4 py-2.5 flex flex-row items-center gap-2.5 w-full justify-center"><img
+  <button (click)="createRoom()"
+          class="bg-dark/80 rounded-xl px-4 py-2.5 flex flex-row items-center gap-2.5 w-full justify-center"><img
     src="/icons/public.svg">Публичный
   </button>
   <p class="font-medium text-15-18">или</p>
-  <button class="bg-dark/80 rounded-xl px-4 py-2.5 flex flex-row items-center gap-2.5 w-full justify-center"><img
+  <button (click)="toggleCreate(true); setRoomPassword()"
+          class="bg-dark/80 rounded-xl px-4 py-2.5 flex flex-row items-center gap-2.5 w-full justify-center"><img
     src="/icons/private.svg">Приватный
   </button>
   <p class="font-normal text-14-17 text-muted">А иначе зачем ты здесь?</p>

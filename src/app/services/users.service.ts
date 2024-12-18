@@ -48,4 +48,20 @@ export class UsersService {
       }),
     );
   }
+
+  getAllUsers(): Observable<{ status: string; users: IUser[] }> {
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.get<{ status: string; users: IUser[] }>(
+          this.api + 'access/users',
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
 }
