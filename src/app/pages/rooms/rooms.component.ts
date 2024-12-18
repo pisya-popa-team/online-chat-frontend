@@ -66,8 +66,6 @@ export class RoomsComponent implements OnInit {
 
     this.roomsService.getRooms().subscribe((response) => {
       this.rooms = response.rooms;
-      this.otherRooms = this.rooms;
-      this.pinnedRooms = [];
 
       this.messages = new Array(this.rooms.length);
 
@@ -79,19 +77,23 @@ export class RoomsComponent implements OnInit {
             this.messages[i] = response.messages;
           });
       }
+
+      let pinnedIDs: number[] = [];
+      let pinnedIDsString = localStorage.getItem('pinnedIDs');
+      if (pinnedIDsString) {
+        pinnedIDs = JSON.parse(pinnedIDsString);
+      }
+      this.pinnedRooms = this.rooms.filter((room) =>
+        pinnedIDs.includes(room.ID),
+      );
+      this.otherRooms = this.rooms.filter(
+        (room) => !pinnedIDs.includes(room.ID),
+      );
     });
   }
 
   ngOnInit(): void {
     this.refreshRooms();
-
-    let pinnedIDs: number[] = [];
-    let pinnedIDsString = localStorage.getItem('pinnedIDs');
-    if (pinnedIDsString) {
-      pinnedIDs = JSON.parse(pinnedIDsString);
-    }
-    this.pinnedRooms = this.rooms.filter((room) => pinnedIDs.includes(room.ID));
-    this.otherRooms = this.rooms.filter((room) => !pinnedIDs.includes(room.ID));
 
     let desc =
       this.rooms.length > 0

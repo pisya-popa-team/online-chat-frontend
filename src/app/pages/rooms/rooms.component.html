@@ -35,15 +35,17 @@
 </div>
 <section *ngIf="rooms && rooms.length > 0" class="flex flex-col gap-2">
   <ng-container *ngIf="pinnedRooms.length > 0">
-    <app-room *ngFor="let room of pinnedRooms; let i = index" [lastMessage]="messages[i][messages[i].length - 1]"
-              [roomName]="room.Name"
-              [roomPin]="true" [roomType]="room.RoomType"></app-room>
+    <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of pinnedRooms; let i = index"
+              [lastMessage]="messages[i][messages[i].length - 1]"
+              [roomID]="room.ID" [roomName]="room.Name" [roomPin]="true"
+              [roomType]="room.RoomType"></app-room>
     <hr class="border-brand/40 border-2">
   </ng-container>
 
-  <app-room *ngFor="let room of otherRooms; let i = index" [lastMessage]="messages[i][messages[i].length - 1]"
-            [roomName]="room.Name"
-            [roomPin]="false" [roomType]="room.RoomType"></app-room>
+  <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of otherRooms; let i = index"
+            [lastMessage]="messages[i][messages[i].length - 1]"
+            [roomID]="room.ID" [roomName]="room.Name" [roomPin]="false"
+            [roomType]="room.RoomType"></app-room>
 </section>
 <section *ngIf="!rooms || rooms.length == 0" class="flex flex-col gap-2 items-center px-20">
   <img class="h-7 w-7" src="/icons/ghost.svg">
