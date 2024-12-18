@@ -1,12 +1,15 @@
 ﻿export interface IRoom {
   ID: number;
-  lastMessage: IMessage | null;
-  pinned: boolean;
-  locked: boolean;
+  Name: string;
+  UserID: number;
+  RoomType: string;
 }
 
 export interface IMessage {
-  sender: string;
-  content: string;
-  date: string;
+  ID: number;
+  MessageType: string;
+  Content: string;
+  SentAt: Date;
+  RoomID: 3;
+  UserID: number;
 }
