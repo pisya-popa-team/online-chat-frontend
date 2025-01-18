@@ -6,11 +6,12 @@ import { NgForOf, NgIf } from '@angular/common';
 import { RoomsService } from '../../services/rooms.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { CreateRoomComponent } from '../../shared/components/create-room/create-room.component';
 
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [RoomComponent, NgForOf, NgIf, FormsModule],
+  imports: [RoomComponent, NgForOf, NgIf, FormsModule, CreateRoomComponent],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.css',
 })
@@ -30,15 +31,17 @@ export class RoomsComponent implements OnInit {
 
   toggleCreate(value: boolean) {
     this.createToggle = value;
+    if (!value) this.isCreating = value;
   }
 
-  setRoomPassword() {
-    this.isCreating = true;
-    this.createType = 'private';
-  }
+  createRoom(type: 'public' | 'private' = 'private') {
+    this.createType = type;
+    if (type === 'private' && !this.isCreating) {
+      this.isCreating = true;
+      return;
+    }
 
-  createRoom() {
-    if (this.createType === 'private' && this.newRoomPassword.length < 1) {
+    if (type === 'private' && this.newRoomPassword.length < 1) {
       this.toastrService.error('Пароль не может быть пустым', 'Ошибка');
       return;
     }
@@ -50,11 +53,11 @@ export class RoomsComponent implements OnInit {
 
     this.roomsService.createRoom(formData).subscribe({
       next: (response) => {
-        this.isCreating = false;
+        this.toggleCreate(false);
         this.refreshRooms();
       },
       error: (error) => {
-        this.isCreating = false;
+        this.toggleCreate(false);
         console.error(error);
       },
     });
