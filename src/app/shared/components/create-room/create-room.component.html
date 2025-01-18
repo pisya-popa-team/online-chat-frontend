@@ -1,7 +1,0 @@
-<button
-  (click)="triggerCallback()"
-  class="bg-dark/80 px-4 py-2.5 rounded-xl flex flex-row gap-2.5 items-center justify-center cursor-pointer w-full"
->
-  <img [src]="type === 'public' ?  '/icons/public.svg' : '/icons/private.svg'"/>
-  {{ type !== null ? type === 'private' ? 'Приватный' : 'Публичный' : 'Создать' }}
-</button>

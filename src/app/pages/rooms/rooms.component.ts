@@ -6,12 +6,12 @@ import { NgForOf, NgIf } from '@angular/common';
 import { RoomsService } from '../../services/rooms.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { CreateRoomComponent } from '../../shared/components/create-room/create-room.component';
+import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
 
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [RoomComponent, NgForOf, NgIf, FormsModule, CreateRoomComponent],
+  imports: [RoomComponent, NgForOf, NgIf, FormsModule, DarkButtonComponent],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.css',
 })
@@ -40,7 +40,6 @@ export class RoomsComponent implements OnInit {
       this.isCreating = true;
       return;
     }
-
     if (type === 'private' && this.newRoomPassword.length < 1) {
       this.toastrService.error('Пароль не может быть пустым', 'Ошибка');
       return;
