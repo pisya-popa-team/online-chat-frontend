@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
-import { IUser } from '../models/user';
+import { IMessage, IRoom } from '../models/room';
 import { ITokens } from '../models/tokens';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
+export class RoomsService {
   readonly api = import.meta.env.NG_APP_API;
   httpClient = inject(HttpClient);
 
@@ -16,12 +16,12 @@ export class UsersService {
     tokens: ITokens;
   } | null>(null);
 
-  getCurrentUser(): Observable<{ status: string; user: IUser }> {
+  getRooms(): Observable<{ rooms: IRoom[]; status: string }> {
     return this.tokenSubject.pipe(
       take(1),
       switchMap((token) => {
-        return this.httpClient.get<{ status: string; user: IUser }>(
-          this.api + 'access/users/me',
+        return this.httpClient.get<{ rooms: IRoom[]; status: string }>(
+          this.api + 'access/rooms',
           {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -32,29 +32,50 @@ export class UsersService {
     );
   }
 
-  updateUser(data: FormData): Observable<{ status: string; user: IUser }> {
+  getRoomsByName(name: string): Observable<{ rooms: IRoom[]; status: string }> {
     return this.tokenSubject.pipe(
       take(1),
       switchMap((token) => {
-        return this.httpClient.patch<{ status: string; user: IUser }>(
-          this.api + 'access/users',
+        return this.httpClient.get<{ rooms: IRoom[]; status: string }>(
+          this.api + `access/rooms/${name}`,
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
+
+  getMessages(
+    id: number,
+    limit = -1,
+    offset = -1,
+  ): Observable<{ messages: IMessage[]; status: string }> {
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.get<{ messages: IMessage[]; status: string }>(
+          this.api +
+            `access/rooms/${id}/messages?limit=${limit}&offset=${offset}`,
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
+
+  createRoom(data: FormData): Observable<{ room: IRoom; status: string }> {
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.post<{ room: IRoom; status: string }>(
+          this.api + 'access/rooms',
           data,
-          {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-            },
-          },
-        );
-      }),
-    );
-  }
-
-  getAllUsers(): Observable<{ status: string; users: IUser[] }> {
-    return this.tokenSubject.pipe(
-      take(1),
-      switchMap((token) => {
-        return this.httpClient.get<{ status: string; users: IUser[] }>(
-          this.api + 'access/users',
           {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
