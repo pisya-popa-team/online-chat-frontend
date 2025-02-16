@@ -1,23 +1,25 @@
-<form (submit)="onSubmit()" [formGroup]="newPasswordForm" class="relative flex flex-col items-center p-10 gap-2.5">
-  <section class="relative gradient-border-br4 py-2 px-5 text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass">
+<form (submit)="onSubmit()" [formGroup]="newPasswordForm"
+      class="relative flex flex-col items-center p-[2dvw] gap-[1dvh]">
+  <section
+    class="relative gradient-border-br4 py-[1dvh] px-[1dvw] text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass">
     Восстановление доступа
   </section>
   <section
-    class="gradient-border-12-bl2 relative py-1 px-5 text-15-18 font-normal max-w-fit-content rounded-[12px_12px_12px_2px] bg-glass mb-5">
+    class="gradient-border-12-bl2 relative py-[0.4dvh] px-[1dvw] text-15-18 font-normal max-w-fit-content rounded-[12px_12px_12px_2px] bg-glass mb-5">
     Придумайте новый пароль
   </section>
   <input
-    class="w-[400px] h-11 p-3 rounded-lg bg-dark/80 text-base font-normal leading-5 placeholder-muted text-white focus:bg-dark focus:outline-none hover:bg-dark"
+    class="w-[21dvw] h-[4dvh] py-[1dvh] px-[1dvw] rounded-lg bg-dark/80 text-base font-normal leading-5 placeholder-muted text-white focus:bg-dark focus:outline-none hover:bg-dark"
     formControlName="newPassword"
     id="new_password"
     placeholder="Пароль" required type="password">
   <input
-    class="w-[400px] h-11 p-3 rounded-lg bg-dark/80 text-base font-normal leading-5 placeholder-muted text-white focus:bg-dark focus:outline-none hover:bg-dark"
+    class="w-[21dvw] h-[4dvh] py-[1dvh] px-[1dvw] rounded-lg bg-dark/80 text-base font-normal leading-5 placeholder-muted text-white focus:bg-dark focus:outline-none hover:bg-dark"
     formControlName="confirmPassword"
     id="repeat_password"
     placeholder="Повторите пароль" required type="password">
   <button
-    class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand/60 active:bg-brand/40"
+    class="w-[2.5dvw] h-[2.5dvw] mt-[2dvh] rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-[auto_1.5dvw] bg-center bg-no-repeat hover:bg-brand/60 active:bg-brand/40"
     type="submit"></button>
 </form>
 

@@ -1,4 +1,4 @@
-<form (submit)="onSubmit()" [formGroup]="recoveryForm" class="relative flex flex-col items-center p-10 gap-2.5">
+<form (submit)="onSubmit()" [formGroup]="recoveryForm" class="relative flex flex-col items-center p-[2dvw] gap-[1dvh]">
   <section class="relative gradient-border-br4 py-2 px-5 text-2xl font-semibold rounded-[20px_20px_4px_20px] bg-glass">
     Восстановление доступа
   </section>
@@ -6,16 +6,16 @@
     class="gradient-border-12-bl4 relative py-1 px-5 text-15-18 font-normal max-w-fit-content rounded-[12px_12px_12px_4px] bg-glass mb-5">
     Введите почту,
     привязанную
-    к вашему аккаунту, а мы отправить на неё данные для восстановления доступа
+    к вашему аккаунту, а мы отправим на неё данные для восстановления доступа
   </section>
   <input
-    class="w-[400px] h-11 p-3 rounded-lg bg-dark/80 text-base font-normal leading-5 placeholder-muted text-white focus:bg-dark focus:outline-none hover:bg-dark"
+    class="w-[21dvw] h-[4dvh] py-[1dvh] px-[1dvw] rounded-lg bg-dark/80 text-base font-normal leading-5 placeholder-muted text-white focus:bg-dark focus:outline-none hover:bg-dark"
     formControlName="email"
     id="email"
     placeholder="Почта" required type="email">
   <button
     [disabled]="isSent"
-    class="w-12 h-12 mt-5 rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-no-repeat hover:bg-brand/60 active:bg-brand/60 disabled:bg-brand/60"
+    class="w-[2.5dvw] h-[2.5dvw] mt-[2dvh] rounded-xl bg-brand bg-[url('/icons/next.svg')] bg-center bg-[auto_1.5dvw] bg-no-repeat hover:bg-brand/60 active:bg-brand/60 disabled:bg-brand/60"
     type="submit"></button>
 </form>
 
