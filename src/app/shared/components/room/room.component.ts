@@ -1,14 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { IMessage } from '../../../models/room';
-import { UsersService } from '../../../services/users.service';
 import { IUser } from '../../../models/user';
 
 @Component({
@@ -31,7 +23,6 @@ export class RoomComponent implements OnInit {
 
   hovering: boolean = false;
   users: IUser[];
-  private usersService = inject(UsersService);
 
   getUnreadMessagesCount(): string {
     if (this.unreadMessagesCount < 10)
@@ -63,13 +54,13 @@ export class RoomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usersService.getAllUsers().subscribe({
-      next: (response) => {
-        this.users = response.users;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    let usersJSON = localStorage.getItem('users')
+      ? localStorage.getItem('users')
+      : '';
+    this.users = usersJSON
+      ? (JSON.parse(usersJSON) as IUser[]).filter((user) =>
+          user?.Room?.find((room) => room?.ID === this.roomID),
+        )
+      : [];
   }
 }

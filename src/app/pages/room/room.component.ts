@@ -1,8 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { StateService } from '../../services/state.service';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MessageComponent } from '../../shared/components/message/message.component';
 import { IMessage } from '../../models/room';
 import { NgForOf } from '@angular/common';
+import { IUser } from '../../models/user';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-room',
@@ -11,107 +12,59 @@ import { NgForOf } from '@angular/common';
   templateUrl: './room.component.html',
   styleUrl: './room.component.css',
 })
-export class RoomComponent implements OnInit {
-  roomId = '';
+export class RoomComponent implements OnInit, AfterViewInit {
+  roomId = 1; //todo: получать roomID
+  users: IUser[];
   usersCount = 0;
-  messages: IMessage[] = [
-    {
-      content: 'Gbcz gjgf',
-      sender: 'username1',
-      date: '10.11.12 13:14',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      sender: 'username2',
-      date: '10.11.12 13:14',
-    },
-    {
-      content: 'Система определила вашу ориентацию за вас. Вы - антихайп.',
-      sender: 'system',
-      date: '10.11.12 13:14',
-    },
-    {
-      content: 'Gbcz gjgf',
-      sender: 'username1',
-      date: '10.11.12 13:14',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      sender: 'username2',
-      date: '10.11.12 13:14',
-    },
-    {
-      content: 'Gbcz gjgf',
-      sender: 'username1',
-      date: '10.11.12 13:14',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      sender: 'username2',
-      date: '10.11.12 13:14',
-    },
-    {
-      content: 'Gbcz gjgf',
-      sender: 'username1',
-      date: '10.11.12 13:14',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      sender: 'username2',
-      date: '10.11.12 13:14',
-    },
-    {
-      content: 'Gbcz gjgf',
-      sender: 'username1',
-      date: '10.11.12 13:14',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      sender: 'username2',
-      date: '10.11.12 13:14',
-    },
-    {
-      content: 'Gbcz gjgf',
-      sender: 'username1',
-      date: '10.11.12 13:14',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      sender: 'username2',
-      date: '10.11.12 13:14',
-    },
-    {
-      content: 'Пользователь username был кикнут из рума',
-      sender: 'system',
-      date: '10.11.12 13:14',
-    },
-  ];
-  senders = [
-    'message',
-    'message',
-    'system',
-    'user',
-    'user',
-    'message',
-    'message',
-    'user',
-    'user',
-    'message',
-    'message',
-    'user',
-    'user',
-    'system',
-  ];
+  // messages: IMessage[] = [
+  //   {
+  //     ID: 1,
+  //     MessageType: 'user',
+  //     Content: 'это сообщение от другого пользователя',
+  //     SentAt: '10.11.12 13:12',
+  //     RoomID: 3,
+  //     UserID: 1,
+  //   },
+  //   {
+  //     ID: 2,
+  //     MessageType: 'system',
+  //     Content: 'это системное сообщение',
+  //     SentAt: '10.11.12 13:12',
+  //     RoomID: 3,
+  //     UserID: 2,
+  //   },
+  //   {
+  //     ID: 3,
+  //     MessageType: 'user',
+  //     Content: 'это сообщение от текущего пользователя',
+  //     SentAt: '10.11.12 13:13',
+  //     RoomID: 3,
+  //     UserID: 4,
+  //   },
+  //   {
+  //     ID: 4,
+  //     MessageType: 'user',
+  //     Content: 'это сообщение от текущего пользователя',
+  //     SentAt: '10.11.12 13:14',
+  //     RoomID: 3,
+  //     UserID: 4,
+  //   },
+  // ];
+  messages: IMessage[] = [];
   protected readonly AbortSignal = AbortSignal;
-  private stateService = inject(StateService);
+  private stateSubject = new BehaviorSubject({
+    title: '',
+    description: '',
+    link: '',
+    linkName: '',
+  });
+  state$ = this.stateSubject.asObservable();
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.usersCount = 1;
+
     let usersCountSuffix;
     let usersCountString = this.usersCount.toString();
     let lc = usersCountString.charAt(usersCountString.length - 1);
@@ -126,11 +79,11 @@ export class RoomComponent implements OnInit {
     else if (lc == '4' && plc != '1') usersCountSuffix = 'юзера';
     else usersCountSuffix = 'юзеров';
 
-    this.stateService.setState({
+    this.stateSubject.next({
       title: `Рум #${this.roomId}`,
       description: `в руме сейчас ${this.usersCount} ${usersCountSuffix}`,
-      linkName: '← К списку румов',
       link: '/',
+      linkName: '← К списку румов',
     });
   }
 }

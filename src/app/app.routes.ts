@@ -8,6 +8,7 @@ import { NewpassComponent } from './pages/newpass/newpass.component';
 import { authGuard } from './guards/auth.guard';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { RoomComponent } from './pages/room/room.component';
+import { ChatInputComponent } from './shared/components/chat-input/chat-input.component';
 
 export const routes: Routes = [
   {
@@ -16,7 +17,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', component: RoomsComponent },
-      { path: 'room', component: RoomComponent },
+      {
+        path: 'room',
+        component: ChatInputComponent,
+        outlet: 'chat-input',
+      },
+      {
+        path: 'room',
+        component: RoomComponent,
+      },
     ],
   },
   {

@@ -1,6 +1,6 @@
-<div class="h-186 w-200">
+<div class="max-w-[41dvw] h-[60dvh]">
   <section>
-    <app-message *ngFor="let msg of messages; index as i" [content]="msg.content" [dateTime]="msg.date"
-                 [messageType]="senders[i]" [sender]="msg.sender"></app-message>
+    <app-message *ngFor="let msg of messages; index as i" [content]="msg.Content" [dateTime]="msg.SentAt"
+                 [messageType]="msg.MessageType" [senderID]="msg.UserID"></app-message>
   </section>
 </div>

@@ -1,12 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RoomComponent } from '../../shared/components/room/room.component';
-import { StateService } from '../../services/state.service';
 import { IMessage, IRoom } from '../../models/room';
 import { NgForOf, NgIf } from '@angular/common';
 import { RoomsService } from '../../services/rooms.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-rooms',
@@ -25,9 +25,14 @@ export class RoomsComponent implements OnInit {
   createType: 'public' | 'private' | null = null;
   newRoomPassword = '';
   protected readonly String = String;
-  private stateService = inject(StateService);
   private roomsService = inject(RoomsService);
   private toastrService = inject(ToastrService);
+
+  private stateSubject = new BehaviorSubject({
+    title: '',
+    description: '',
+  });
+  state$ = this.stateSubject.asObservable();
 
   toggleCreate(value: boolean) {
     this.createToggle = value;
@@ -91,20 +96,20 @@ export class RoomsComponent implements OnInit {
       this.otherRooms = this.rooms.filter(
         (room) => !pinnedIDs.includes(room.ID),
       );
+
+      let desc =
+        this.rooms.length > 0
+          ? 'тотал ' + this.rooms.length + ' румов'
+          : 'создай первый рум';
+
+      this.stateSubject.next({
+        title: 'Румы',
+        description: desc,
+      });
     });
   }
 
   ngOnInit(): void {
     this.refreshRooms();
-
-    let desc =
-      this.rooms.length > 0
-        ? 'тотал ' + this.rooms.length + ' румов'
-        : 'создай первый рум';
-
-    this.stateService.setState({
-      title: 'Румы',
-      description: desc,
-    });
   }
 }

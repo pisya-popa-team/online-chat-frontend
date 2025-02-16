@@ -9,7 +9,7 @@ export interface IMessage {
   ID: number;
   MessageType: string;
   Content: string;
-  SentAt: Date;
-  RoomID: 3;
+  SentAt: string;
+  RoomID: number;
   UserID: number;
 }

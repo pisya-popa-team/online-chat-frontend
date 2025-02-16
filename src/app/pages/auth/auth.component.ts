@@ -41,7 +41,7 @@ export class AuthComponent implements OnInit {
       const formData = new FormData();
       formData.append('email', this.authForm.value.email);
       formData.append('password', this.authForm.value.password);
-      console.log(formData);
+
       this.authService.auth(formData).subscribe({
         next: (user) => {
           this.authForm.reset();
@@ -58,7 +58,6 @@ export class AuthComponent implements OnInit {
             );
           } else {
             this.toastrService.error(error.message, 'Ошибка авторизации');
-            console.error(error);
           }
           this.isSubmitting = false;
         },
