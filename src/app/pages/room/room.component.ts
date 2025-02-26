@@ -114,6 +114,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
     this.socket$?.next(newMessage);
     console.log(newMessage.content);
+
     // this.messages.push(newMessage);
   }
 
