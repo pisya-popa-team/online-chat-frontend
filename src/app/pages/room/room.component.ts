@@ -68,9 +68,11 @@ export class RoomComponent implements OnInit, AfterViewInit {
     this.socket$ = webSocket(this.socketURL);
     this.socket$.subscribe({
       next: (message) => {
-        if (message.type === 1) {
-          this.messages.push(message.data);
-        }
+        // if (message.type === 1) {
+        //   this.messages.push(message.data);
+        // }
+
+        console.log(message);
 
         if (!this.isConnected) {
           this.isConnected = true;
@@ -93,23 +95,26 @@ export class RoomComponent implements OnInit, AfterViewInit {
   sendMessage(message: string, type: string) {
     if (!this.isConnected) return;
 
-    const newMessage: IMessage = {
-      ID: 0,
-      MessageType: type,
-      Content: message,
-      SentAt: new Date().toLocaleString([], {
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      RoomID: this.roomId,
-      UserID: 4,
-    };
+    // const newMessage: IMessage = {
+    //   ID: 0,
+    //   MessageType: type,
+    //   Content: message,
+    //   SentAt: new Date().toLocaleString([], {
+    //     day: '2-digit',
+    //     month: '2-digit',
+    //     year: '2-digit',
+    //     hour: '2-digit',
+    //     minute: '2-digit',
+    //   }),
+    //   RoomID: this.roomId,
+    //   UserID: 4,
+    // };
+
+    let newMessage = { content: message };
 
     this.socket$?.next(newMessage);
-    this.messages.push(newMessage);
+    console.log(newMessage.content);
+    // this.messages.push(newMessage);
   }
 
   closeSocket() {
