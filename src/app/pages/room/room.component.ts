@@ -4,6 +4,7 @@ import { IMessage } from '../../models/room';
 import { NgForOf } from '@angular/common';
 import { IUser } from '../../models/user';
 import { BehaviorSubject } from 'rxjs';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 @Component({
   selector: 'app-room',
@@ -51,6 +52,8 @@ export class RoomComponent implements OnInit, AfterViewInit {
   //   },
   // ];
   messages: IMessage[] = [];
+  readonly socketURL = import.meta.env.NG_APP_WEBSOCKET_API;
+  isConnected: boolean = false;
   protected readonly AbortSignal = AbortSignal;
   private stateSubject = new BehaviorSubject({
     title: '',
@@ -59,8 +62,60 @@ export class RoomComponent implements OnInit, AfterViewInit {
     linkName: '',
   });
   state$ = this.stateSubject.asObservable();
+  private socket$!: WebSocketSubject<any>;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.socket$ = webSocket(this.socketURL);
+    this.socket$.subscribe({
+      next: (message) => {
+        if (message.type === 1) {
+          this.messages.push(message.data);
+        }
+
+        if (!this.isConnected) {
+          this.isConnected = true;
+          this.sendMessage('Connected', 'system');
+        }
+      },
+      error: (error) => {
+        console.error('WebSocket error', error);
+      },
+      complete: () => {
+        this.sendMessage('Disconnect', 'system');
+        this.isConnected = false;
+        console.log('WebSocket complete');
+      },
+    });
+    // this.webSocketService.connect('');
+    // this.webSocketService.sendMessage({ messageType: 0, data: 'test' });
+  }
+
+  sendMessage(message: string, type: string) {
+    if (!this.isConnected) return;
+
+    const newMessage: IMessage = {
+      ID: 0,
+      MessageType: type,
+      Content: message,
+      SentAt: new Date().toLocaleString([], {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+      RoomID: this.roomId,
+      UserID: 4,
+    };
+
+    this.socket$?.next(newMessage);
+    this.messages.push(newMessage);
+  }
+
+  closeSocket() {
+    this.socket$?.complete();
+    // this.webSocketService.closeConnection();
+  }
 
   ngAfterViewInit(): void {
     this.usersCount = 1;
