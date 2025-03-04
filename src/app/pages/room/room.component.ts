@@ -5,7 +5,7 @@ import { NgForOf } from '@angular/common';
 import { IUser } from '../../models/user';
 import { BehaviorSubject } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
-import endingByNum from '../../heplers/endingByNum';
+import endingByNum from '../../helpers/endingByNum';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
