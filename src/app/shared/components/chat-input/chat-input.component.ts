@@ -1,11 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { WebsocketService } from '../../../services/websocket.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -15,16 +17,17 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './chat-input.component.css',
 })
 export class ChatInputComponent implements OnInit {
-  chatInput: FormGroup;
+  chatInput!: FormGroup;
   toastrService = inject(ToastrService);
+  webSocketService = inject(WebsocketService);
 
   constructor(private fb: FormBuilder) {}
 
   onSubmit() {
     if (this.chatInput.valid) {
-      const formData = new FormData();
-      formData.append('content', this.chatInput.value.content);
-      console.log(formData.get('content'));
+      this.webSocketService.sendMessage({
+        content: this.chatInput.value.content.trim(),
+      });
       this.chatInput.reset();
     } else {
       this.toastrService.error('Сообщение не может быть пустым.', 'Ошибка');
@@ -33,7 +36,11 @@ export class ChatInputComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatInput = this.fb.group({
-      content: ['', [Validators.required]],
+      content: ['', [Validators.required, this.noWhitespaceValidator]],
     });
+  }
+
+  private noWhitespaceValidator(control: AbstractControl) {
+    return (control.value || '').trim().length ? null : { whitespace: true };
   }
 }
