@@ -1,6 +1,6 @@
 <div (mouseenter)="hovering = true" (mouseleave)="hovering = false" class="bg-brand/40 rounded-20 px-5 py-4 max-w-25">
   <section class="flex flex-row justify-between">
-    <h3 class="text-text font-semibold text-16-20">{{ roomName }}</h3>
+    <h3 (click)="connectToRoom()" class="text-text font-semibold text-16-20 cursor-pointer">{{ roomName }}</h3>
     <div class="flex flex-row gap-0.5 items-center">
       <img *ngIf="roomPin" class="h-3.25 w-3.25" src="/icons/pin.svg">
       <img *ngIf="roomType === 'private'" class="h-3.25 w-3.25" src="/icons/lock.svg">

@@ -23,7 +23,7 @@ export const routes: Routes = [
         outlet: 'chat-input',
       },
       {
-        path: 'room',
+        path: 'room/:id',
         component: RoomComponent,
       },
     ],

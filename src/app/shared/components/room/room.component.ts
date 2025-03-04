@@ -1,7 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { NgIf } from '@angular/common';
 import { IMessage } from '../../../models/room';
 import { IUser } from '../../../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-room',
@@ -21,6 +29,7 @@ export class RoomComponent implements OnInit {
 
   @Input() unreadMessagesCount: number = 0;
 
+  router = inject(Router);
   hovering: boolean = false;
   users: IUser[];
 
@@ -51,6 +60,10 @@ export class RoomComponent implements OnInit {
     localStorage.setItem('pinnedIDs', JSON.stringify(pinnedIDs));
 
     this.roomPinToggled.emit();
+  }
+
+  connectToRoom() {
+    this.router.navigate(['/room/' + this.roomID]);
   }
 
   ngOnInit(): void {
