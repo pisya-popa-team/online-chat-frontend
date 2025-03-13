@@ -17,8 +17,8 @@
     </section>
     <section *ngIf="messageType != 'system'" [ngClass]="{'ml-auto':messageType == 'user' && isCurrentUser()}"
              class="flex flex-row gap-2.5 items-baseline">
-      <p class="text-14-17 font-normal text-muted">{{ dateTime }}</p>
-      <p *ngIf="messageType == 'user'" class="text-15-18 font-semibold text-muted">{{ username() }}</p>
+      <p class="text-14-17 font-normal text-muted">{{ sentAt }}</p>
+      <p *ngIf="messageType == 'user'" class="text-15-18 font-semibold text-muted">{{ senderUsername }}</p>
     </section>
   </div>
 </div>

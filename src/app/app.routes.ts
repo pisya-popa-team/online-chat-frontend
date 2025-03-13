@@ -18,7 +18,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: RoomsComponent },
       {
-        path: 'room',
+        path: 'room/:id',
         component: ChatInputComponent,
         outlet: 'chat-input',
       },

@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
-import { IUser } from '../../../models/user';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'app-message',
@@ -9,23 +9,25 @@ import { IUser } from '../../../models/user';
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })
-export class MessageComponent {
+export class MessageComponent implements OnInit {
   @Input() content: string;
-  @Input() dateTime: string;
+  @Input() sentAt: string;
   @Input() senderID: number;
   @Input() messageType: string;
 
+  senderUsername: string = '';
+  usersService = inject(UsersService);
+
   isCurrentUser(): boolean {
     let currentUser = localStorage.getItem('user');
-    let currentUserID = currentUser ? JSON.parse(currentUser).ID : -1;
+    let currentID = currentUser ? JSON.parse(currentUser).ID : -1;
 
-    return this.senderID === currentUserID;
+    return this.senderID === currentID;
   }
 
-  username(): string {
-    let usersJSON = localStorage.getItem('users');
-    let users: IUser[] = usersJSON ? (JSON.parse(usersJSON) as IUser[]) : [];
-    let user = users?.find((u) => u.ID === this.senderID);
-    return user ? user.Username : '';
+  ngOnInit(): void {
+    this.usersService.getUserByID(this.senderID).subscribe((response) => {
+      this.senderUsername = response.user.Username;
+    });
   }
 }

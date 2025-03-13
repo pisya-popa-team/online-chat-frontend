@@ -1,27 +1,27 @@
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { MessageComponent } from '../../shared/components/message/message.component';
 import { IMessage } from '../../models/room';
-import { NgForOf } from '@angular/common';
-import { IUser } from '../../models/user';
+import { NgForOf, NgIf } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
 import endingByNum from '../../helpers/endingByNum';
 import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { RoomsService } from '../../services/rooms.service';
 
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [MessageComponent, NgForOf],
+  imports: [MessageComponent, NgForOf, FormsModule, NgIf],
   templateUrl: './room.component.html',
   styleUrl: './room.component.css',
 })
 export class RoomComponent implements OnInit, AfterViewInit {
-  roomId: number;
-  users: IUser[] = [];
   usersCount = 0;
   messages: IMessage[] = [];
-  socketService = inject(WebsocketService);
   route = inject(ActivatedRoute);
+  webSocketService = inject(WebsocketService);
+  roomsService = inject(RoomsService);
   private stateSubject = new BehaviorSubject({
     title: '',
     description: '',
@@ -32,16 +32,26 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.roomId = Number(params.get('id'));
+      this.webSocketService.currentRoomID = Number(params.get('id'));
     });
 
-    this.socketService.messages$.subscribe((messages) => {
+    this.webSocketService.connect(this.webSocketService.currentRoomID);
+
+    this.roomsService
+      .getMessages(this.webSocketService.currentRoomID)
+      .subscribe((response) => {
+        response.messages.forEach((message) =>
+          this.webSocketService.addMessage(message),
+        );
+      });
+
+    this.webSocketService.messages$.subscribe((messages) => {
       this.messages = messages;
     });
   }
 
   closeSocket() {
-    this.socketService.close();
+    this.webSocketService.close();
   }
 
   ngAfterViewInit(): void {
@@ -54,7 +64,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
     ]);
 
     this.stateSubject.next({
-      title: `Рум #${this.roomId}`,
+      title: `Рум #${this.webSocketService.currentRoomID}`,
       description: `в руме сейчас ${this.usersCount} ${usersCountSuffix}`,
       link: '/',
       linkName: '← К списку румов',

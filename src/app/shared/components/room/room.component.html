@@ -13,7 +13,7 @@
   </section>
   <section *ngIf="lastMessage" class="flex flex-row gap-3 items-center mt-2.5 justify-between">
     <div class="flex flex-row gap-3 items-center whitespace-nowrap overflow-hidden overflow-ellipsis">
-      <p class="font-medium text-16-20">{{ getUsername(lastMessage.UserID) }}</p>
+      <p class="font-medium text-16-20">{{ getUsername() }}</p>
       <p
         class="font-normal text-16-20">{{ lastMessage.Content }}</p>
     </div>
@@ -22,4 +22,14 @@
       {{ getUnreadMessagesCount() }}
     </p>
   </section>
+</div>
+<div *ngIf="isConnecting"
+     class="fixed z-50 right-5 top-18 bg-darkBrand/20 backdrop-blur-10 shadow-modal px-3 py-2 rounded-20 rounded-tr-xs flex flex-col gap-1 border-2 border-white">
+  <input [(ngModel)]="roomPassword"
+         class="bg-dark rounded-lg px-5 py-3 text-center w-full"
+         id="room_pass" placeholder="Пароль для входа">
+  <app-dark-button (clickEvent)="connectToPrivate()"
+                   [iconName]="'private'"
+                   [title]="'Подключиться'"
+  ></app-dark-button>
 </div>

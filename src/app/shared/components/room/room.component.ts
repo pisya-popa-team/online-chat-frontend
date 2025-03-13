@@ -1,48 +1,45 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { IMessage } from '../../../models/room';
-import { IUser } from '../../../models/user';
 import { Router } from '@angular/router';
+import { RoomsService } from '../../../services/rooms.service';
+import { DarkButtonComponent } from '../dark-button/dark-button.component';
+import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, DarkButtonComponent, FormsModule],
   templateUrl: './room.component.html',
   styleUrl: './room.component.css',
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent {
   @Output() roomPinToggled = new EventEmitter<void>();
   @Input() roomID: number;
   @Input() roomName: string = '';
   @Input() roomType: string = 'public';
   @Input() roomPin: boolean = false;
-
-  @Input() lastMessage: IMessage | null;
+  @Input() lastMessage?: IMessage | null;
 
   @Input() unreadMessagesCount: number = 0;
 
+  username: string;
+
   router = inject(Router);
   hovering: boolean = false;
-  users: IUser[];
+  roomsService = inject(RoomsService);
+  toastService = inject(ToastrService);
+  usersService = inject(UsersService);
+  isConnecting: boolean = false;
+  roomPassword: string;
 
   getUnreadMessagesCount(): string {
     if (this.unreadMessagesCount < 10)
       return this.unreadMessagesCount.toString();
 
     return '9+';
-  }
-
-  getUsername(id: number): string {
-    let user = this.users?.find((u) => u.ID === id);
-    return user ? user.Username : '';
   }
 
   togglePinRoom() {
@@ -63,17 +60,59 @@ export class RoomComponent implements OnInit {
   }
 
   connectToRoom() {
-    this.router.navigate(['/room/' + this.roomID]);
+    if (this.roomType === 'private') {
+      this.isConnecting = true;
+      return;
+    }
+    this.roomsService.connect().subscribe({
+      next: () => {
+        this.isConnecting = false;
+        this.router.navigate(['/room/' + this.roomID]);
+      },
+      error: (error) => {
+        this.isConnecting = false;
+        console.error(error);
+      },
+    });
   }
 
-  ngOnInit(): void {
-    let usersJSON = localStorage.getItem('users')
-      ? localStorage.getItem('users')
-      : '';
-    this.users = usersJSON
-      ? (JSON.parse(usersJSON) as IUser[]).filter((user) =>
-          user?.Room?.find((room) => room?.ID === this.roomID),
-        )
-      : [];
+  connectToPrivate() {
+    if (!this.isConnecting) return;
+
+    if (!this.roomPassword) {
+      this.toastService.error('Пароль не может быть пустым', 'Ошибка');
+      return;
+    }
+
+    this.roomsService.connect(this.roomPassword).subscribe({
+      next: () => {
+        this.isConnecting = false;
+        this.router.navigate(['/room/' + this.roomID]);
+      },
+      error: (error) => {
+        this.isConnecting = false;
+        this.toastService.error('Неправильный пароль', 'Ошибка');
+        console.error(error);
+      },
+    });
+  }
+
+  getUsername(): string {
+    if (this.lastMessage && !this.username) {
+      let userJSON = localStorage.getItem('user');
+      let userID = userJSON ? JSON.parse(userJSON).ID : -1;
+      if (this.lastMessage.UserID === userID) {
+        this.username = '(You):';
+        return this.username;
+      }
+
+      this.usersService
+        .getUserByID(this.lastMessage.UserID)
+        .subscribe((response) => {
+          this.username = `${response.user.Username}:`;
+        });
+    }
+
+    return this.username;
   }
 }

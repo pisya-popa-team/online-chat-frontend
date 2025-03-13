@@ -6,7 +6,6 @@
 }
 
 export interface IMessage {
-  ID: number;
   MessageType: string;
   Content: string;
   SentAt: string;

@@ -4,5 +4,5 @@ export interface IUser {
   ID: number;
   Username: string;
   Email: string;
-  Room: IRoom[];
+  Rooms: IRoom[];
 }

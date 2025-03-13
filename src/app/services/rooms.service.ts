@@ -85,4 +85,27 @@ export class RoomsService {
       }),
     );
   }
+
+  connect(
+    password?: string,
+  ): Observable<{ count: number; room: IRoom; status: string }> {
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.post<{
+          count: number;
+          room: IRoom;
+          status: string;
+        }>(
+          this.api + 'access/rooms',
+          { password: password },
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
 }

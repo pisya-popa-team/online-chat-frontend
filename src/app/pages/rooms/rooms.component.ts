@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
 import { BehaviorSubject } from 'rxjs';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-rooms',
@@ -27,6 +28,7 @@ export class RoomsComponent implements OnInit {
   protected readonly String = String;
   private roomsService = inject(RoomsService);
   private toastrService = inject(ToastrService);
+  private usersService = inject(UsersService);
 
   private stateSubject = new BehaviorSubject({
     title: '',
@@ -71,8 +73,8 @@ export class RoomsComponent implements OnInit {
   refreshRooms() {
     this.rooms = [];
 
-    this.roomsService.getRooms().subscribe((response) => {
-      this.rooms = response.rooms;
+    this.usersService.getCurrentUser().subscribe((response) => {
+      this.rooms = response.user.Rooms;
 
       this.messages = new Array(this.rooms.length);
 
@@ -107,6 +109,44 @@ export class RoomsComponent implements OnInit {
         description: desc,
       });
     });
+  }
+
+  searchRooms(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const searchValue = inputElement.value.trim();
+
+    if (searchValue.length > 0) {
+      this.roomsService.getRoomsByName(searchValue).subscribe({
+        next: (response) => {
+          this.rooms = response.rooms;
+
+          let pinnedIDs: number[] = JSON.parse(
+            localStorage.getItem('pinnedIDs') || '[]',
+          );
+
+          this.pinnedRooms = this.rooms.filter((room) =>
+            pinnedIDs.includes(room.ID),
+          );
+          this.otherRooms = this.rooms.filter(
+            (room) => !pinnedIDs.includes(room.ID),
+          );
+
+          for (let i = 0; i < this.rooms.length; i++) {
+            this.messages[i] = [];
+            this.roomsService
+              .getMessages(this.rooms[i].ID)
+              .subscribe((response) => {
+                this.messages[i] = response.messages;
+              });
+          }
+        },
+        error: (error) => {
+          console.error('Ошибка при поиске комнат:', error);
+        },
+      });
+    } else {
+      this.refreshRooms();
+    }
   }
 
   ngOnInit(): void {
