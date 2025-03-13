@@ -30,6 +30,9 @@ module.exports = {
         "20-24": ["20px", "24px"],
         "16-20": ["16px", "20px"],
       },
+      minWidth: {
+        25: "25rem",
+      },
       maxWidth: {
         form: "30rem",
         25: "25rem",
