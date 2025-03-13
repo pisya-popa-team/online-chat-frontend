@@ -87,16 +87,6 @@ export class RoomsComponent implements OnInit {
           });
       }
 
-      let desc =
-        this.rooms.length > 0
-          ? 'тотал ' + this.rooms.length + ' румов'
-          : 'создай первый рум';
-
-      this.stateService.setState({
-        title: 'Румы',
-        description: desc,
-      });
-
       let pinnedIDs: number[] = [];
       let pinnedIDsString = localStorage.getItem('pinnedIDs');
       if (pinnedIDsString) {
