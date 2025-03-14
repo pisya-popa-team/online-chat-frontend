@@ -13,8 +13,8 @@ module.exports = {
         danger: "#f85151",
         glass: "#C5F6FA33",
         white: "#fdfdfd",
-        message0: "#C5F6FA",
-        message1: "#15AABF",
+        incoming_message: "#C5F6FA",
+        outgoing_message: "#15AABF",
       },
       backgroundImage: {
         auth: "url(/images/auth-bg.png)",
