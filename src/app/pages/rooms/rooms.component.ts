@@ -5,7 +5,7 @@ import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
 import { RoomsService } from '../../services/rooms.service';
 import { UsersService } from '../../services/users.service';
 
@@ -29,12 +29,12 @@ export class RoomsComponent implements OnInit {
   private roomsService = inject(RoomsService);
   private toastrService = inject(ToastrService);
   private usersService = inject(UsersService);
-
   private stateSubject = new BehaviorSubject({
     title: '',
     description: '',
   });
   state$ = this.stateSubject.asObservable();
+  private searchSubject = new Subject<string>();
 
   toggleCreate(value: boolean) {
     this.createToggle = value;
@@ -71,8 +71,6 @@ export class RoomsComponent implements OnInit {
   }
 
   refreshRooms() {
-    this.rooms = [];
-
     this.usersService.getCurrentUser().subscribe((response) => {
       this.rooms = response.user.Rooms;
 
@@ -80,11 +78,11 @@ export class RoomsComponent implements OnInit {
 
       for (let i = 0; i < this.rooms.length; i++) {
         this.messages[i] = [];
-        this.roomsService
-          .getMessages(this.rooms[i].ID)
-          .subscribe((response) => {
-            this.messages[i] = response.messages;
-          });
+        // this.roomsService
+        //   .getMessages(this.rooms[i].ID)
+        //   .subscribe((response) => {
+        //     this.messages[i] = response.messages;
+        //   });
       }
 
       let pinnedIDs: number[] = [];
@@ -115,41 +113,46 @@ export class RoomsComponent implements OnInit {
     const inputElement = event.target as HTMLInputElement;
     const searchValue = inputElement.value.trim();
 
-    if (searchValue.length > 0) {
-      this.roomsService.getRoomsByName(searchValue).subscribe({
-        next: (response) => {
-          this.rooms = response.rooms;
+    if (searchValue.length > 0) this.searchSubject.next(searchValue);
+    else this.refreshRooms();
+  }
 
-          let pinnedIDs: number[] = JSON.parse(
-            localStorage.getItem('pinnedIDs') || '[]',
-          );
+  performSearch(searchValue: string) {
+    this.roomsService.getRoomsByName(searchValue).subscribe({
+      next: (response) => {
+        this.rooms = response.rooms;
 
-          this.pinnedRooms = this.rooms.filter((room) =>
-            pinnedIDs.includes(room.ID),
-          );
-          this.otherRooms = this.rooms.filter(
-            (room) => !pinnedIDs.includes(room.ID),
-          );
+        let pinnedIDs: number[] = JSON.parse(
+          localStorage.getItem('pinnedIDs') || '[]',
+        );
 
-          for (let i = 0; i < this.rooms.length; i++) {
-            this.messages[i] = [];
-            this.roomsService
-              .getMessages(this.rooms[i].ID)
-              .subscribe((response) => {
-                this.messages[i] = response.messages;
-              });
-          }
-        },
-        error: (error) => {
-          console.error('Ошибка при поиске комнат:', error);
-        },
-      });
-    } else {
-      this.refreshRooms();
-    }
+        this.pinnedRooms = this.rooms.filter((room) =>
+          pinnedIDs.includes(room.ID),
+        );
+        this.otherRooms = this.rooms.filter(
+          (room) => !pinnedIDs.includes(room.ID),
+        );
+
+        for (let i = 0; i < this.rooms.length; i++) {
+          this.messages[i] = [];
+          // this.roomsService
+          //   .getMessages(this.rooms[i].ID)
+          //   .subscribe((response) => {
+          //     this.messages[i] = response.messages;
+          //   });
+        }
+      },
+      error: (error) => {
+        console.error('Ошибка при поиске комнат:', error);
+      },
+    });
   }
 
   ngOnInit(): void {
     this.refreshRooms();
+
+    this.searchSubject.pipe(debounceTime(500)).subscribe((searchValue) => {
+      this.performSearch(searchValue);
+    });
   }
 }

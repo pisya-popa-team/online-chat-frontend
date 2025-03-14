@@ -5,7 +5,7 @@
     <input
       (input)="searchRooms($event)"
       class="bg-transparent border-none p-0 m-0 focus:border-none focus:outline-none active:border-none flex-grow"
-      placeholder="Найти рум" type="text">
+      placeholder="Найти рум" type="search">
   </div>
   <app-dark-button (clickEvent)="toggleCreate(true)"
                    *ngIf="!isCreating"

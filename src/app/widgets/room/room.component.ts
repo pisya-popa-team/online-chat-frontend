@@ -98,20 +98,20 @@ export class RoomComponent {
   }
 
   getUsername(): string {
-    if (this.lastMessage && !this.username) {
-      let userJSON = localStorage.getItem('user');
-      let userID = userJSON ? JSON.parse(userJSON).ID : -1;
-      if (this.lastMessage.UserID === userID) {
-        this.username = '(You):';
-        return this.username;
-      }
-
-      this.usersService
-        .getUserByID(this.lastMessage.UserID)
-        .subscribe((response) => {
-          this.username = `${response.user.Username}:`;
-        });
-    }
+    // if (this.lastMessage && !this.username) {
+    //   let userJSON = localStorage.getItem('user');
+    //   let userID = userJSON ? JSON.parse(userJSON).ID : -1;
+    //   if (this.lastMessage.UserID === userID) {
+    //     this.username = '(You):';
+    //     return this.username;
+    //   }
+    //
+    //   this.usersService
+    //     .getUserByID(this.lastMessage.UserID)
+    //     .subscribe((response) => {
+    //       this.username = `${response.user.Username}:`;
+    //     });
+    // }
 
     return this.username;
   }
