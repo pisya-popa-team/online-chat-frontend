@@ -32,8 +32,6 @@ export class BasicComponent implements OnInit {
   }
 
   setState(payload: { state$: Observable<any> }) {
-    console.log(payload.state$);
-
     payload.state$.subscribe((state) => {
       this.title = state.title;
       this.description = state.description;
