@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MessageComponent } from '../../shared/components/message/message.component';
 import { IMessage } from '../../entities/message';
 import { NgForOf, NgIf } from '@angular/common';
@@ -16,7 +24,7 @@ import { RoomsService } from '../../services/rooms.service';
   templateUrl: './room.component.html',
   styleUrl: './room.component.css',
 })
-export class RoomComponent implements OnInit, AfterViewInit {
+export class RoomComponent implements OnInit, AfterViewInit, AfterViewChecked {
   usersCount = 0;
   messages: IMessage[] = [];
   route = inject(ActivatedRoute);
@@ -29,6 +37,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
     linkName: '',
   });
   state$ = this.stateSubject.asObservable();
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -48,6 +57,8 @@ export class RoomComponent implements OnInit, AfterViewInit {
     this.webSocketService.messages$.subscribe((messages) => {
       this.messages = messages;
     });
+
+    this.scrollToBottom();
   }
 
   isCurrentUser(senderID: number): boolean {
@@ -76,5 +87,16 @@ export class RoomComponent implements OnInit, AfterViewInit {
       link: '/',
       linkName: '← К списку румов',
     });
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop =
+        this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 }
