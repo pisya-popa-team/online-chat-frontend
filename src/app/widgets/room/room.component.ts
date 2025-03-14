@@ -56,12 +56,12 @@ export class RoomComponent {
     this.roomPinToggled.emit();
   }
 
-  connectToRoom() {
+  joinRoom() {
     if (this.roomType === 'private') {
       this.isConnecting = true;
       return;
     }
-    this.roomsService.connect().subscribe({
+    this.roomsService.join().subscribe({
       next: () => {
         this.isConnecting = false;
         this.router.navigate(['/room/' + this.roomID]);
@@ -73,7 +73,7 @@ export class RoomComponent {
     });
   }
 
-  connectToPrivate() {
+  joinPrivateRoom() {
     if (!this.isConnecting) return;
 
     if (!this.roomPassword) {
@@ -81,7 +81,7 @@ export class RoomComponent {
       return;
     }
 
-    this.roomsService.connect(this.roomPassword).subscribe({
+    this.roomsService.join(this.roomPassword).subscribe({
       next: () => {
         this.isConnecting = false;
         this.router.navigate(['/room/' + this.roomID]);
