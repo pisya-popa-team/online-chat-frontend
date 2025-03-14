@@ -49,7 +49,7 @@ export class RoomComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.roomsService
       .getMessages(this.webSocketService.currentRoomID)
       .subscribe((response) => {
-        response.messages.forEach((message) =>
+        response.messages?.forEach((message) =>
           this.webSocketService.addMessage(message),
         );
       });
