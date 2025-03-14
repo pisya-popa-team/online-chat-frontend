@@ -1,6 +1,6 @@
 <div (mouseenter)="hovering = true" (mouseleave)="hovering = false" class="bg-brand/40 rounded-20 px-5 py-4 max-w-25">
   <section class="flex flex-row justify-between">
-    <h3 class="text-text font-semibold text-16-20">{{ roomName }}</h3>
+    <h3 (click)="joinRoom()" class="text-text font-semibold text-16-20 cursor-pointer">{{ roomName }}</h3>
     <div class="flex flex-row gap-0.5 items-center">
       <img *ngIf="roomPin" class="h-3.25 w-3.25" src="/icons/pin.svg">
       <img *ngIf="roomType === 'private'" class="h-3.25 w-3.25" src="/icons/lock.svg">
@@ -12,14 +12,24 @@
     </div>
   </section>
   <section *ngIf="lastMessage" class="flex flex-row gap-3 items-center mt-2.5 justify-between">
-    <div class="flex flex-row gap-3 items-center whitespace-nowrap overflow-hidden overflow-ellipsis">
-      <p class="font-medium text-16-20">{{ getUsername(lastMessage.UserID) }}</p>
+    <div class="flex flex-row gap-[0.75dvw] items-center whitespace-nowrap overflow-hidden overflow-ellipsis">
+      <p class="font-medium text-16-20">{{ getUsername() }}</p>
       <p
-        class="font-normal text-16-20">{{ lastMessage.Content }}</p>
+        class="font-normal text-16-20">{{ lastMessage.content }}</p>
     </div>
     <p *ngIf="unreadMessagesCount > 0"
        class="bg-white px-2 py-0.5 rounded-max text-brand font-normal text-14-17 gap-10 justify-self-end">
       {{ getUnreadMessagesCount() }}
     </p>
   </section>
+</div>
+<div *ngIf="isConnecting"
+     class="fixed z-50 right-5 top-18 bg-darkBrand/20 backdrop-blur-10 shadow-modal px-3 py-2 rounded-20 rounded-tr-xs flex flex-col gap-1 border-2 border-white">
+  <input [(ngModel)]="roomPassword"
+         class="bg-dark rounded-lg px-5 py-3 text-center w-full"
+         id="room_pass" placeholder="Пароль для входа">
+  <app-dark-button (clickEvent)="joinPrivateRoom()"
+                   [iconName]="'private'"
+                   [title]="'Подключиться'"
+  ></app-dark-button>
 </div>

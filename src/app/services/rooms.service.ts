@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
-import { IMessage, IRoom } from '../models/room';
-import { ITokens } from '../models/tokens';
+import { IMessage } from '../entities/message';
+import { IRoom } from '../entities/room';
+import { ITokens } from '../entities/tokens';
 
 @Injectable({
   providedIn: 'root',
@@ -76,6 +77,29 @@ export class RoomsService {
         return this.httpClient.post<{ room: IRoom; status: string }>(
           this.api + 'access/rooms',
           data,
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            },
+          },
+        );
+      }),
+    );
+  }
+
+  join(
+    password?: string,
+  ): Observable<{ count: number; room: IRoom; status: string }> {
+    return this.tokenSubject.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.httpClient.post<{
+          count: number;
+          room: IRoom;
+          status: string;
+        }>(
+          this.api + 'access/rooms',
+          { password: password },
           {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('accessToken'),

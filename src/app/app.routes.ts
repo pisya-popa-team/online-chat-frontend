@@ -7,13 +7,26 @@ import { LoginComponent } from './shared/layout/login/login.component';
 import { NewpassComponent } from './pages/newpass/newpass.component';
 import { authGuard } from './guards/auth.guard';
 import { RoomsComponent } from './pages/rooms/rooms.component';
+import { RoomComponent } from './pages/room/room.component';
+import { ChatInputComponent } from './widgets/chat-input/chat-input.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: BasicComponent,
     canActivate: [authGuard],
-    children: [{ path: '', component: RoomsComponent }],
+    children: [
+      { path: '', component: RoomsComponent },
+      {
+        path: 'room/:id',
+        component: ChatInputComponent,
+        outlet: 'chat-input',
+      },
+      {
+        path: 'room/:id',
+        component: RoomComponent,
+      },
+    ],
   },
   {
     path: '',

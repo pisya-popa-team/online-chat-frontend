@@ -1,0 +1,10 @@
+<form (submit)="onSubmit()" [formGroup]="chatInput"
+      class="w-[41dvw] h-[4dvh] mt-[1dvh] flex flex-row justify-center gap-2.5">
+  <input class="bg-brand/10 w-[70dvw] border-brand border-2 rounded-xl px-5 py-3" formControlName="content"
+         placeholder="Введите сообщение"
+         type="text">
+  <button class="min-w-[4dvh] min-h-[4dvh] max-w-[4dvh] max-h-[4dvh] rounded-xl bg-brand p-[1dvh] flex" type="submit">
+    <img
+      src="/icons/submit.svg">
+  </button>
+</form>

@@ -1,66 +1,71 @@
-<section class="flex flex-row gap-3 h-10 mb-4">
-  <div
-    class="flex flex-row gap-3 bg-brand/10 rounded-xl border-2 py-2.5 px-3 border-brand flex-grow">
-    <img class="h-3.75 w-3.75" src="/icons/search.svg">
-    <input
-      class="bg-transparent border-none p-0 m-0 focus:border-none focus:outline-none active:border-none flex-grow"
-      placeholder="Найти рум" type="text">
+<div class="p-5 overflow-scroll no-scrollbar">
+  <section class="flex flex-row gap-3 h-10 mb-4">
+    <div
+      class="flex flex-row gap-3 bg-brand/10 rounded-xl border-2 py-2.5 px-3 border-brand flex-grow">
+      <img class="h-3.75 w-3.75" src="/icons/search.svg">
+      <input
+        (input)="searchRooms($event)"
+        class="bg-transparent border-none p-0 m-0 focus:border-none focus:outline-none active:border-none flex-grow"
+        placeholder="Найти рум" type="search">
+    </div>
+    <app-dark-button (clickEvent)="toggleCreate(true)"
+                     *ngIf="!isCreating"
+                     [title]="'Создать'"
+    ></app-dark-button>
+  </section>
+  <div (click)="toggleCreate(false)" *ngIf="createToggle"
+       class="fixed bg-none top-0 right-0 left-0 bottom-0 z-40"></div>
+  <div *ngIf="createToggle"
+       class="fixed z-50 right-5 top-18 bg-darkBrand/20 backdrop-blur-10 shadow-modal px-3 py-2 rounded-20 rounded-tr-xs flex flex-col gap-1 border-2 border-white">
+    <app-dark-button (clickEvent)="createRoom('public')"
+                     *ngIf="!isCreating"
+                     [iconName]="'public'"
+                     [title]="'Публичная'"
+    ></app-dark-button>
+    <app-dark-button (clickEvent)="createRoom('private')"
+                     *ngIf="!isCreating"
+                     [iconName]="'private'"
+                     [title]="'Приватная'"
+    ></app-dark-button>
+    <input *ngIf="isCreating && createType=='private'" [(ngModel)]="newRoomPassword"
+           class="bg-dark rounded-lg px-5 py-3 text-center w-full"
+           id="room_pass" placeholder="Пароль для входа">
+    <app-dark-button (clickEvent)="createRoom('private')" *ngIf="isCreating && createType=='private'"
+                     [iconName]="'private'"
+                     [title]="'Создать'"
+    ></app-dark-button>
   </div>
-  <app-dark-button (clickEvent)="toggleCreate(true)"
-                   *ngIf="!isCreating"
-                   [title]="'Создать'"
-  ></app-dark-button>
-</section>
-<div (click)="toggleCreate(false)" *ngIf="createToggle" class="fixed bg-none top-0 right-0 left-0 bottom-0 z-40"></div>
-<div *ngIf="createToggle"
-     class="fixed z-50 right-5 top-18 bg-darkBrand/20 backdrop-blur-10 shadow-modal px-3 py-2 rounded-20 rounded-tr-xs flex flex-col gap-1 border-2 border-white">
-  <app-dark-button (clickEvent)="createRoom('public')"
-                   *ngIf="!isCreating"
-                   [iconName]="'public'"
-                   [title]="'Публичная'"
-  ></app-dark-button>
-  <app-dark-button (clickEvent)="createRoom('private')"
-                   *ngIf="!isCreating"
-                   [iconName]="'private'"
-                   [title]="'Приватная'"
-  ></app-dark-button>
-  <input *ngIf="isCreating && createType=='private'" [(ngModel)]="newRoomPassword"
-         class="bg-dark rounded-lg px-5 py-3 text-center w-full"
-         id="room_pass" placeholder="Пароль для входа">
-  <app-dark-button (clickEvent)="createRoom('private')" *ngIf="isCreating && createType=='private'"
-                   [iconName]="'private'"
-                   [title]="'Создать'"
-  ></app-dark-button>
-</div>
-<section *ngIf="rooms && rooms.length > 0" class="flex flex-col gap-2">
-  <ng-container *ngIf="pinnedRooms.length > 0">
-    <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of pinnedRooms; let i = index"
-              [lastMessage]="messages[i][messages[i].length - 1]"
-              [roomID]="room.ID" [roomName]="room.Name" [roomPin]="true"
-              [roomType]="room.RoomType"></app-room>
-    <hr class="border-brand/40 border-2">
-  </ng-container>
+  <div *ngIf="rooms && rooms.length > 0"
+       class="flex flex-col gap-2 overflow-scroll no-scrollbar min-h-[31dvh] max-h-[66dvh]">
+    <ng-container *ngIf="pinnedRooms.length > 0">
+      <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of pinnedRooms; let i = index"
+                [lastMessage]="messages[i] ? messages[i][messages[i].length - 1] : null"
+                [roomID]="room.ID" [roomName]="room.Name" [roomPin]="true"
+                [roomType]="room.RoomType"></app-room>
+      <hr class="border-brand/40 border-2">
+    </ng-container>
 
-  <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of otherRooms; let i = index"
-            [lastMessage]="messages[i][messages[i].length - 1]"
-            [roomID]="room.ID" [roomName]="room.Name" [roomPin]="false"
-            [roomType]="room.RoomType"></app-room>
-</section>
-<section *ngIf="!rooms || rooms.length == 0" class="flex flex-col gap-2 items-center px-20">
-  <img class="h-7 w-7" src="/icons/ghost.svg">
-  <p class="font-normal text-14-17">Кажется, здесь пусто...</p>
-  <p class="font-semibold text-16-20">Но ты можешь <span class="text-brand">это исправить</span>!</p>
-  <p class="font-medium text-14-17">Прямо сейчас ты можешь создать</p>
-  <app-dark-button
-    (clickEvent)="createRoom('public')"
-    [iconName]="'public'"
-    [title]="'Публичная'"
-  ></app-dark-button>
-  <p class="font-medium text-15-18">или</p>
-  <app-dark-button
-    (clickEvent)="toggleCreate(true); createRoom('private')"
-    [iconName]="'private'"
-    [title]="'Приватная'"
-  ></app-dark-button>
-  <p class="font-normal text-14-17 text-muted">А иначе зачем ты здесь?</p>
-</section>
+    <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of otherRooms; let i = index"
+              [lastMessage]="messages[i] ? messages[i][messages[i].length - 1] : null"
+              [roomID]="room.ID" [roomName]="room.Name" [roomPin]="false"
+              [roomType]="room.RoomType"></app-room>
+  </div>
+  <section *ngIf="!rooms || rooms.length == 0" class="flex flex-col gap-2 items-center px-20">
+    <img class="h-7 w-7" src="/icons/ghost.svg">
+    <p class="font-normal text-14-17">Кажется, здесь пусто...</p>
+    <p class="font-semibold text-16-20">Но ты можешь <span class="text-brand">это исправить</span>!</p>
+    <p class="font-medium text-14-17">Прямо сейчас ты можешь создать</p>
+    <app-dark-button
+      (clickEvent)="createRoom('public')"
+      [iconName]="'public'"
+      [title]="'Публичная'"
+    ></app-dark-button>
+    <p class="font-medium text-15-18">или</p>
+    <app-dark-button
+      (clickEvent)="toggleCreate(true); createRoom('private')"
+      [iconName]="'private'"
+      [title]="'Приватная'"
+    ></app-dark-button>
+    <p class="font-normal text-14-17 text-muted">А иначе зачем ты здесь?</p>
+  </section>
+</div>

@@ -8,14 +8,18 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../services/api.service';
 
 import { Observable, take, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
   private apiService: ApiService = inject(ApiService);
+  private authService: AuthService = inject(AuthService);
+  private toastrService = inject(ToastrService);
   private isRefreshing = false;
 
   intercept(
@@ -75,6 +79,8 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         }),
         catchError((error) => {
           this.isRefreshing = false;
+          this.authService.logout();
+          this.toastrService.error('Время сессии истекло', 'Ошибка');
 
           return throwError(() => error);
         }),

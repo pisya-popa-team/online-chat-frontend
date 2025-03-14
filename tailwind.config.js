@@ -13,6 +13,8 @@ module.exports = {
         danger: "#f85151",
         glass: "#C5F6FA33",
         white: "#fdfdfd",
+        incoming_message: "#C5F6FA",
+        outgoing_message: "#15AABF",
       },
       backgroundImage: {
         auth: "url(/images/auth-bg.png)",
@@ -55,10 +57,14 @@ module.exports = {
       height: {
         3.25: "0.813rem",
         3.75: "0.938rem",
+        186: "42.5rem",
+        200: "50rem",
       },
       width: {
         3.25: "0.813rem",
         3.75: "0.938rem",
+        186: "42.5rem",
+        200: "50rem",
       },
       spacing: {
         18: "4.25rem",

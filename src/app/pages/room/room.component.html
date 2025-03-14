@@ -1,0 +1,8 @@
+<div #scrollMe class="max-w-[41dvw] h-[60dvh] overflow-scroll no-scrollbar p-5">
+  <section>
+    <app-message *ngFor="let msg of messages; index as i" [content]="msg.content"
+                 [isCurrentUser]="isCurrentUser(msg.user_id)"
+                 [messageType]="msg.message_type" [sender]="msg.username"
+                 [sentAt]="msg.sent_at"></app-message>
+  </section>
+</div>

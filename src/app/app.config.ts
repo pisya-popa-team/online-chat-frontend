@@ -8,7 +8,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { httpInterceptorProviders } from './heplers/api.interceptor';
+import { httpInterceptorProviders } from './shared/helpers/api.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

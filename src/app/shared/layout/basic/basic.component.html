@@ -1,26 +1,31 @@
 <div class="w-screen h-screen bg-main bg-cover">
-  <section class="absolute top-10 left-[80px] flex flex-col items-center text-center cursor-pointer select-none"
+  <section class="absolute top-[4dvh] left-[4dvw] flex flex-col items-center text-center cursor-pointer select-none"
            routerLink=''>
     <h2 class="text-32-38 font-bold">T.T</h2>
     <h3 class="text-20-24 font-semibold">Онлайн чат</h3>
   </section>
   <section
-    class="absolute bottom-10 left-[80px] text-left bg-glass rounded-xl px-5 py-2.5 text-15-18 font-bold flex items-center gap-2.5">
+    class="absolute bottom-[4dvh] left-[4dvw] text-left bg-glass rounded-xl px-5 py-2.5 text-15-18 font-bold flex items-center gap-2.5">
     {{ user?.Username || 'username' }}
     <button (click)="logout()"><img alt="" class="w-8 h-8" src="/icons/logout.svg"/></button>
   </section>
-  <div class="absolute bottom-10 right-[80px]">
+  <div class="absolute bottom-[4dvh] right-[4dvw]">
     <p>У нас есть <a href="#">правила</a></p>
   </div>
   <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-    <section class="pb-20 text-center">
+    <section class="pb-[2dvh] text-center">
       <h1 class="text-32-38 font-extrabold">{{ title }}</h1>
       <a *ngIf="link.length > 0" href="{{link}}">{{ linkName }}</a>
     </section>
     <p *ngIf="description.length > 0" class="text-muted text-14-17 pb-2 justify-self-end">{{ description }}</p>
+
     <div
-      class="relative bg-glass backdrop-blur-10 rounded-20 p-5 gap-4 border-2 min-w-25 max-w-25 min-h-100 max-h-200 overflow-scroll no-scrollbar">
-      <router-outlet></router-outlet>
+      class="relative bg-glass rounded-20 gap-4 border-2 min-w-[20dvw] min-h-[37dvh] max-h-[74dvh]">
+      <router-outlet (activate)="setState($event)"></router-outlet>
     </div>
+    <div *ngIf="router.url.startsWith('/room')">
+      <app-chat-input></app-chat-input>
+    </div>
+
   </div>
 </div>
