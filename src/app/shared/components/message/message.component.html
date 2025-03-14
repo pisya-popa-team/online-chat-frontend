@@ -4,13 +4,8 @@
   }" class="flex flex-row mb-2.5 ">
   <div>
     <section [ngClass]="{
-    'bg-message1/20':messageType == 'user' && isCurrentUser,
-    'bg-message0/20':messageType == 'user' && !isCurrentUser,
-    'border-message1':messageType == 'user' && isCurrentUser,
-    'border-message0':messageType == 'user' && !isCurrentUser,
-    'rounded-br-lg':messageType == 'user' && isCurrentUser,
-    'rounded-bl-lg':messageType == 'user' && !isCurrentUser,
-    'ml-auto':messageType == 'user' && isCurrentUser,
+    'bg-message1/20 border-message1 rounded-br-lg ml-auto':messageType == 'user' && isCurrentUser,
+    'bg-message0/20 border-message0 rounded-bl-lg':messageType == 'user' && !isCurrentUser,
     'max-w-[33dvw] w-fit rounded-20 py-2 px-5 gap-0.5 border-2': messageType !='system',
     }" class="mb-0.5">
       <p class="text-16-20 font-normal">{{ content }}</p>
