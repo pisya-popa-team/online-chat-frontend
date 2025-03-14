@@ -96,12 +96,14 @@ export class RoomComponent {
 
   getUsername() {
     let userJSON = localStorage.getItem('user');
-    let username = userJSON ? JSON.parse(userJSON) : '.';
+    let userID = userJSON ? JSON.parse(userJSON).ID : '.';
 
-    this.lastMessageSender = this.lastMessage ? this.lastMessage.username : '';
+    if (this.lastMessage) {
+      return this.lastMessage.user_id === userID
+        ? '(You)'
+        : this.lastMessageSender;
+    }
 
-    return this.lastMessageSender === username
-      ? '(You)'
-      : this.lastMessageSender;
+    return '';
   }
 }
