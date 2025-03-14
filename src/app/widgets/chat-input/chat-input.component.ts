@@ -7,9 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { WebsocketService } from '../../../services/websocket.service';
-import { IMessage } from '../../../models/room';
-import { IUser } from '../../../models/user';
+import { WebsocketService } from '../../services/websocket.service';
+import { IMessage } from '../../entities/room';
+import { IUser } from '../../entities/user';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

@@ -8,7 +8,7 @@ import { NewpassComponent } from './pages/newpass/newpass.component';
 import { authGuard } from './guards/auth.guard';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { RoomComponent } from './pages/room/room.component';
-import { ChatInputComponent } from './shared/components/chat-input/chat-input.component';
+import { ChatInputComponent } from './widgets/chat-input/chat-input.component';
 
 export const routes: Routes = [
   {

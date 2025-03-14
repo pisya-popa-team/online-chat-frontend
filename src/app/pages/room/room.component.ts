@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { MessageComponent } from '../../shared/components/message/message.component';
-import { IMessage } from '../../models/room';
+import { IMessage } from '../../entities/room';
 import { NgForOf, NgIf } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
-import endingByNum from '../../helpers/endingByNum';
+import endingByNum from '../../shared/helpers/endingByNum';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RoomsService } from '../../services/rooms.service';
@@ -48,6 +48,13 @@ export class RoomComponent implements OnInit, AfterViewInit {
     this.webSocketService.messages$.subscribe((messages) => {
       this.messages = messages;
     });
+  }
+
+  isCurrentUser(senderID: number): boolean {
+    let currentUser = localStorage.getItem('user');
+    let currentID = currentUser ? JSON.parse(currentUser).ID : -1;
+
+    return senderID === currentID;
   }
 
   closeSocket() {

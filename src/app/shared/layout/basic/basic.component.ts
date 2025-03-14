@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { IUser } from '../../../models/user';
-import { UsersService } from '../../../services/users.service';
+import { IUser } from '../../../entities/user';
 import { AuthService } from '../../../services/auth.service';
 import { Observable } from 'rxjs';
-import { ChatInputComponent } from '../../components/chat-input/chat-input.component';
+import { ChatInputComponent } from '../../../widgets/chat-input/chat-input.component';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'app-basic',

@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
-import { IMessage, IRoom } from '../models/room';
-import { ITokens } from '../models/tokens';
+import { IMessage, IRoom } from '../entities/room';
+import { ITokens } from '../entities/tokens';
 
 @Injectable({
   providedIn: 'root',

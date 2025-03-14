@@ -8,11 +8,11 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../services/api.service';
 
 import { Observable, take, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable()

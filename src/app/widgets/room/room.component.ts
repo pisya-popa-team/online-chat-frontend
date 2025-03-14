@@ -1,12 +1,12 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { IMessage } from '../../../models/room';
+import { IMessage } from '../../entities/room';
 import { Router } from '@angular/router';
-import { RoomsService } from '../../../services/rooms.service';
-import { DarkButtonComponent } from '../dark-button/dark-button.component';
+import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { UsersService } from '../../../services/users.service';
+import { RoomsService } from '../../services/rooms.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-room',

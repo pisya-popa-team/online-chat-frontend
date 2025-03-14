@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
-import { IUser } from '../models/user';
-import { ITokens } from '../models/tokens';
+import { IUser } from '../entities/user';
+import { ITokens } from '../entities/tokens';
 
 @Injectable({
   providedIn: 'root',

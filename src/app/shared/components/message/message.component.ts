@@ -15,15 +15,10 @@ export class MessageComponent implements OnInit {
   @Input() senderID: number;
   @Input() messageType: string;
 
+  @Input() isCurrentUser: boolean;
+
   senderUsername: string = '';
   usersService = inject(UsersService);
-
-  isCurrentUser(): boolean {
-    let currentUser = localStorage.getItem('user');
-    let currentID = currentUser ? JSON.parse(currentUser).ID : -1;
-
-    return this.senderID === currentID;
-  }
 
   ngOnInit(): void {
     this.usersService.getUserByID(this.senderID).subscribe((response) => {

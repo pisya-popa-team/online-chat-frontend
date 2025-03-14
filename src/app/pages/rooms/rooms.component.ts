@@ -1,12 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RoomComponent } from '../../shared/components/room/room.component';
-import { IMessage, IRoom } from '../../models/room';
+import { RoomComponent } from '../../widgets/room/room.component';
+import { IMessage, IRoom } from '../../entities/room';
 import { NgForOf, NgIf } from '@angular/common';
-import { RoomsService } from '../../services/rooms.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
 import { BehaviorSubject } from 'rxjs';
+import { RoomsService } from '../../services/rooms.service';
 import { UsersService } from '../../services/users.service';
 
 @Component({
