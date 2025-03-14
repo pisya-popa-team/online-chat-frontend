@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { WebsocketService } from '../../services/websocket.service';
-import { IMessage } from '../../entities/room';
+import { IMessage } from '../../entities/message';
 import { IUser } from '../../entities/user';
 import { ActivatedRoute } from '@angular/router';
 
@@ -36,17 +36,18 @@ export class ChatInputComponent implements OnInit {
       let user: IUser = userJSON ? JSON.parse(userJSON) : null;
 
       let message: IMessage = {
-        MessageType: 'user',
-        Content: this.chatInput.value.content.trim(),
-        SentAt: new Date().toLocaleString('ru-RU', {
+        message_type: 'user',
+        content: this.chatInput.value.content.trim(),
+        sent_at: new Date().toLocaleString('ru-RU', {
           day: '2-digit',
           month: '2-digit',
           year: '2-digit',
           hour: '2-digit',
           minute: '2-digit',
         }),
-        RoomID: this.webSocketService.currentRoomID,
-        UserID: user.ID,
+        room_id: this.webSocketService.currentRoomID,
+        user_id: user.ID,
+        username: user.Username,
       };
 
       this.webSocketService.sendMessage(message);

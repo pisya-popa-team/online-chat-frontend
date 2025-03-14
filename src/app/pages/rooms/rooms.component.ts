@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RoomComponent } from '../../widgets/room/room.component';
-import { IMessage, IRoom } from '../../entities/room';
+import { IRoom } from '../../entities/room';
+import { IMessage } from '../../entities/message';
 import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -78,11 +79,11 @@ export class RoomsComponent implements OnInit {
 
       for (let i = 0; i < this.rooms.length; i++) {
         this.messages[i] = [];
-        // this.roomsService
-        //   .getMessages(this.rooms[i].ID)
-        //   .subscribe((response) => {
-        //     this.messages[i] = response.messages;
-        //   });
+        this.roomsService
+          .getMessages(this.rooms[i].ID)
+          .subscribe((response) => {
+            this.messages[i] = response.messages;
+          });
       }
 
       let pinnedIDs: number[] = [];
@@ -135,11 +136,11 @@ export class RoomsComponent implements OnInit {
 
         for (let i = 0; i < this.rooms.length; i++) {
           this.messages[i] = [];
-          // this.roomsService
-          //   .getMessages(this.rooms[i].ID)
-          //   .subscribe((response) => {
-          //     this.messages[i] = response.messages;
-          //   });
+          this.roomsService
+            .getMessages(this.rooms[i].ID)
+            .subscribe((response) => {
+              this.messages[i] = response.messages;
+            });
         }
       },
       error: (error) => {

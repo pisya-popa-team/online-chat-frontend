@@ -1,6 +1,5 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
-import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'app-message',
@@ -9,20 +8,10 @@ import { UsersService } from '../../../services/users.service';
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent {
   @Input() content: string;
   @Input() sentAt: string;
-  @Input() senderID: number;
+  @Input() sender: string;
   @Input() messageType: string;
-
   @Input() isCurrentUser: boolean;
-
-  senderUsername: string = '';
-  usersService = inject(UsersService);
-
-  ngOnInit(): void {
-    this.usersService.getUserByID(this.senderID).subscribe((response) => {
-      this.senderUsername = response.user.Username;
-    });
-  }
 }

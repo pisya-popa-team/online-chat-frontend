@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { BehaviorSubject } from 'rxjs';
-import { IMessage } from '../entities/room';
+import { IMessage } from '../entities/message';
 
 @Injectable({
   providedIn: 'root',

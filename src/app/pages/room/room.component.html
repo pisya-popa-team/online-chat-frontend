@@ -1,8 +1,8 @@
 <div class="max-w-[41dvw] h-[60dvh]">
   <section>
-    <app-message *ngFor="let msg of messages; index as i" [content]="msg.Content"
-                 [isCurrentUser]="isCurrentUser(msg.UserID)"
-                 [messageType]="msg.MessageType" [senderID]="msg.UserID"
-                 [sentAt]="msg.SentAt"></app-message>
+    <app-message *ngFor="let msg of messages; index as i" [content]="msg.content"
+                 [isCurrentUser]="isCurrentUser(msg.user_id)"
+                 [messageType]="msg.message_type" [sender]="msg.username"
+                 [sentAt]="msg.sent_at"></app-message>
   </section>
 </div>

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { MessageComponent } from '../../shared/components/message/message.component';
-import { IMessage } from '../../entities/room';
+import { IMessage } from '../../entities/message';
 import { NgForOf, NgIf } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';

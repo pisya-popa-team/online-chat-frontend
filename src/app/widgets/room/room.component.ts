@@ -1,12 +1,11 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { IMessage } from '../../entities/room';
+import { IMessage } from '../../entities/message';
 import { Router } from '@angular/router';
 import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { RoomsService } from '../../services/rooms.service';
-import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-room',
@@ -22,16 +21,14 @@ export class RoomComponent {
   @Input() roomType: string = 'public';
   @Input() roomPin: boolean = false;
   @Input() lastMessage?: IMessage | null;
-
   @Input() unreadMessagesCount: number = 0;
 
-  username: string;
+  lastMessageSender: string;
 
   router = inject(Router);
   hovering: boolean = false;
   roomsService = inject(RoomsService);
   toastService = inject(ToastrService);
-  usersService = inject(UsersService);
   isConnecting: boolean = false;
   roomPassword: string;
 
@@ -97,22 +94,14 @@ export class RoomComponent {
     });
   }
 
-  getUsername(): string {
-    // if (this.lastMessage && !this.username) {
-    //   let userJSON = localStorage.getItem('user');
-    //   let userID = userJSON ? JSON.parse(userJSON).ID : -1;
-    //   if (this.lastMessage.UserID === userID) {
-    //     this.username = '(You):';
-    //     return this.username;
-    //   }
-    //
-    //   this.usersService
-    //     .getUserByID(this.lastMessage.UserID)
-    //     .subscribe((response) => {
-    //       this.username = `${response.user.Username}:`;
-    //     });
-    // }
+  getUsername() {
+    let userJSON = localStorage.getItem('user');
+    let username = userJSON ? JSON.parse(userJSON) : '.';
 
-    return this.username;
+    this.lastMessageSender = this.lastMessage ? this.lastMessage.username : '';
+
+    return this.lastMessageSender === username
+      ? '(You)'
+      : this.lastMessageSender;
   }
 }
