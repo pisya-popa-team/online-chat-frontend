@@ -61,9 +61,10 @@ export class RoomComponent {
       this.isConnecting = true;
       return;
     }
-    this.roomsService.join().subscribe({
-      next: () => {
+    this.roomsService.join(this.roomID).subscribe({
+      next: (responce) => {
         this.isConnecting = false;
+        this.roomsService.currentRoomCount = responce.count;
         this.router.navigate(['/room/' + this.roomID]);
       },
       error: (error) => {
@@ -81,9 +82,10 @@ export class RoomComponent {
       return;
     }
 
-    this.roomsService.join(this.roomPassword).subscribe({
-      next: () => {
+    this.roomsService.join(this.roomID, this.roomPassword).subscribe({
+      next: (responce) => {
         this.isConnecting = false;
+        this.roomsService.currentRoomCount = responce.count;
         this.router.navigate(['/room/' + this.roomID]);
       },
       error: (error) => {

@@ -9,6 +9,7 @@ import { ITokens } from '../entities/tokens';
   providedIn: 'root',
 })
 export class RoomsService {
+  public currentRoomCount: number = 0;
   readonly api = import.meta.env.NG_APP_API;
   httpClient = inject(HttpClient);
 

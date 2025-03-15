@@ -73,7 +73,7 @@ export class RoomComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngAfterViewInit(): void {
-    this.usersCount = 1; //TODO: получать количество юзеров с сервера
+    this.usersCount = this.roomsService.currentRoomCount;
 
     let usersCountSuffix = endingByNum(this.usersCount, [
       'юзер',
