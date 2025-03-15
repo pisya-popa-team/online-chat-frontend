@@ -87,7 +87,7 @@ export class RoomsService {
     );
   }
 
-  join(
+  join(roomID: number,
     password?: string,
   ): Observable<{ count: number; room: IRoom; status: string }> {
     return this.tokenSubject.pipe(
@@ -98,7 +98,7 @@ export class RoomsService {
           room: IRoom;
           status: string;
         }>(
-          this.api + 'access/rooms',
+          this.api + `access/rooms/${roomID}`,
           { password: password },
           {
             headers: {
