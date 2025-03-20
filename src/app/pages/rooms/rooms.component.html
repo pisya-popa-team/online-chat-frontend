@@ -37,16 +37,16 @@
   </div>
   <div *ngIf="rooms && rooms.length > 0"
        class="flex flex-col gap-2 overflow-scroll no-scrollbar min-h-[31dvh] max-h-[66dvh]">
-    <ng-container *ngIf="pinnedRooms.length > 0">
-      <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of pinnedRooms; let i = index"
-                [lastMessage]="messages[i] ? messages[i][messages[i].length - 1] : null"
+    <ng-container *ngIf="sortedRooms.pinned.length > 0">
+      <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of sortedRooms.pinned"
+                [lastMessage]="getLastMessage(room.ID)"
                 [roomID]="room.ID" [roomName]="room.Name" [roomPin]="true"
                 [roomType]="room.RoomType"></app-room>
       <hr class="border-brand/40 border-2">
     </ng-container>
 
-    <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of otherRooms; let i = index"
-              [lastMessage]="messages[i] ? messages[i][messages[i].length - 1] : null"
+    <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of sortedRooms.other"
+              [lastMessage]="getLastMessage(room.ID)"
               [roomID]="room.ID" [roomName]="room.Name" [roomPin]="false"
               [roomType]="room.RoomType"></app-room>
   </div>

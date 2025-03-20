@@ -6,7 +6,7 @@ import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
-import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
+import { BehaviorSubject, debounceTime, find, Subject } from 'rxjs';
 import { RoomsService } from '../../services/rooms.service';
 import { UsersService } from '../../services/users.service';
 
@@ -19,14 +19,14 @@ import { UsersService } from '../../services/users.service';
 })
 export class RoomsComponent implements OnInit {
   rooms: IRoom[] = [];
-  messages: IMessage[][];
-  pinnedRooms: IRoom[];
-  otherRooms: IRoom[];
+  messages: (IMessage | any)[] = [];
+  sortedRooms: { pinned: IRoom[]; other: IRoom[] };
   createToggle: boolean = false;
   isCreating: boolean = false;
   createType: 'public' | 'private' | null = null;
   newRoomPassword = '';
   protected readonly String = String;
+  protected readonly find = find;
   private roomsService = inject(RoomsService);
   private toastrService = inject(ToastrService);
   private usersService = inject(UsersService);
@@ -74,28 +74,24 @@ export class RoomsComponent implements OnInit {
   refreshRooms() {
     this.usersService.getCurrentUser().subscribe((response) => {
       this.rooms = response.user.Rooms;
-
       this.messages = new Array(this.rooms.length);
-
-      for (let i = 0; i < this.rooms.length; i++) {
-        this.messages[i] = [];
-        this.roomsService
-          .getMessages(this.rooms[i].ID)
-          .subscribe((response) => {
-            this.messages[i] = response.messages;
-          });
-      }
+      this.getMessages();
 
       let pinnedIDs: number[] = [];
       let pinnedIDsString = localStorage.getItem('pinnedIDs');
       if (pinnedIDsString) {
         pinnedIDs = JSON.parse(pinnedIDsString);
       }
-      this.pinnedRooms = this.rooms.filter((room) =>
-        pinnedIDs.includes(room.ID),
-      );
-      this.otherRooms = this.rooms.filter(
-        (room) => !pinnedIDs.includes(room.ID),
+      this.sortedRooms = this.rooms.reduce(
+        (acc, room) => {
+          if (pinnedIDs.includes(room.ID)) acc.pinned.push(room);
+          else acc.other.push(room);
+          return acc;
+        },
+        {
+          pinned: [],
+          other: [],
+        } as { pinned: IRoom[]; other: IRoom[] },
       );
 
       let desc =
@@ -121,32 +117,29 @@ export class RoomsComponent implements OnInit {
   performSearch(searchValue: string) {
     this.roomsService.getRoomsByName(searchValue).subscribe({
       next: (response) => {
-        this.rooms = response.rooms;
-
-        let pinnedIDs: number[] = JSON.parse(
-          localStorage.getItem('pinnedIDs') || '[]',
-        );
-
-        this.pinnedRooms = this.rooms.filter((room) =>
-          pinnedIDs.includes(room.ID),
-        );
-        this.otherRooms = this.rooms.filter(
-          (room) => !pinnedIDs.includes(room.ID),
-        );
-
-        for (let i = 0; i < this.rooms.length; i++) {
-          this.messages[i] = [];
-          this.roomsService
-            .getMessages(this.rooms[i].ID)
-            .subscribe((response) => {
-              this.messages[i] = response.messages;
-            });
-        }
+        this.sortedRooms.pinned = [];
+        this.sortedRooms.other = response.rooms;
+        this.getMessages();
       },
       error: (error) => {
         console.error('Ошибка при поиске комнат:', error);
       },
     });
+  }
+
+  getMessages() {
+    for (let i = 0; i < this.rooms.length; i++) {
+      this.messages[i] = null;
+      this.roomsService
+        .getMessages(this.rooms[i].ID, 1)
+        .subscribe((response) => {
+          this.messages[i] = response.messages?.[0];
+        });
+    }
+  }
+
+  getLastMessage(roomID: number): IMessage | null {
+    return this.messages.find((message) => message?.room_id === roomID);
   }
 
   ngOnInit(): void {

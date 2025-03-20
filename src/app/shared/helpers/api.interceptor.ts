@@ -71,7 +71,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
           const newRequest = request.clone({
             setHeaders: {
-              Authorization: `Bearer ${response.tokens.access_token}`,
+              Authorization: `Bearer ${response.tokens.refresh_token}`,
             },
           });
 
@@ -94,7 +94,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
           const newRequest = request.clone({
             setHeaders: {
-              Authorization: `Bearer ${response.tokens.access_token}`,
+              Authorization: `Bearer ${response.tokens.refresh_token}`,
             },
           });
           return next.handle(newRequest);

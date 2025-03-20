@@ -88,7 +88,8 @@ export class RoomsService {
     );
   }
 
-  join(roomID: number,
+  join(
+    roomID: number,
     password?: string,
   ): Observable<{ count: number; room: IRoom; status: string }> {
     return this.tokenSubject.pipe(

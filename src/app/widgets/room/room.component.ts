@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { IMessage } from '../../entities/message';
 import { Router } from '@angular/router';
 import { DarkButtonComponent } from '../../shared/components/dark-button/dark-button.component';
@@ -10,7 +10,7 @@ import { RoomsService } from '../../services/rooms.service';
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [NgIf, DarkButtonComponent, FormsModule],
+  imports: [NgIf, DarkButtonComponent, FormsModule, NgClass],
   templateUrl: './room.component.html',
   styleUrl: './room.component.css',
 })
@@ -26,7 +26,6 @@ export class RoomComponent {
   lastMessageSender: string;
 
   router = inject(Router);
-  hovering: boolean = false;
   roomsService = inject(RoomsService);
   toastService = inject(ToastrService);
   isConnecting: boolean = false;
@@ -39,7 +38,8 @@ export class RoomComponent {
     return '9+';
   }
 
-  togglePinRoom() {
+  togglePinRoom(event: any) {
+    event.stopPropagation();
     let pinnedIDs: number[] = [];
     let pinnedIDsString = localStorage.getItem('pinnedIDs');
     if (pinnedIDsString) {

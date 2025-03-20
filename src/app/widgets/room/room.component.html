@@ -1,17 +1,15 @@
-<div (mouseenter)="hovering = true" (mouseleave)="hovering = false" class="bg-brand/40 rounded-20 px-5 py-4 max-w-25">
+<div (click)="joinRoom()"
+     class="bg-brand/40 rounded-20 px-5 py-4 max-w-25 cursor-pointer group">
   <section class="flex flex-row justify-between">
-    <h3 (click)="joinRoom()" class="text-text font-semibold text-16-20 cursor-pointer">{{ roomName }}</h3>
+    <h3 class="text-text font-semibold text-16-20">{{ roomName }}</h3>
     <div class="flex flex-row gap-0.5 items-center">
-      <img *ngIf="roomPin" class="h-3.25 w-3.25" src="/icons/pin.svg">
+      <img (click)="togglePinRoom($event)" [ngClass]="{'invisible':!roomPin}"
+           class="h-3.25 w-3.25 group-hover:visible" src="/icons/pin.svg">
       <img *ngIf="roomType === 'private'" class="h-3.25 w-3.25" src="/icons/lock.svg">
-      <p class="font-normal text-14-17">10.10.12 13:14</p>
-      <img (click)="togglePinRoom()"
-           *ngIf="hovering"
-           class="h-3.25 w-3.25 cursor-pointer"
-           src="/icons/pin.svg">
+      <p *ngIf="roomType != 'private'" class="font-normal text-14-17">{{ lastMessage?.sent_at }}</p>
     </div>
   </section>
-  <section *ngIf="lastMessage" class="flex flex-row gap-3 items-center mt-2.5 justify-between">
+  <section *ngIf="lastMessage && roomType != 'private'" class="flex flex-row gap-3 items-center mt-2.5 justify-between">
     <div class="flex flex-row gap-[0.75dvw] items-center whitespace-nowrap overflow-hidden overflow-ellipsis">
       <p class="font-medium text-16-20">{{ getUsername() }}</p>
       <p
