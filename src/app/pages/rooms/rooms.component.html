@@ -35,7 +35,7 @@
                      [title]="'Создать'"
     ></app-dark-button>
   </div>
-  <div *ngIf="rooms && rooms.length > 0"
+  <div #scrollMe *ngIf="rooms && rooms.length > 0"
        class="flex flex-col gap-2 overflow-scroll no-scrollbar min-h-[31dvh] max-h-[66dvh]">
     <ng-container *ngIf="sortedRooms.pinned.length > 0">
       <app-room (roomPinToggled)="refreshRooms()" *ngFor="let room of sortedRooms.pinned"

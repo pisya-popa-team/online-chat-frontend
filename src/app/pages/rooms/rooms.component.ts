@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RoomComponent } from '../../widgets/room/room.component';
 import { IRoom } from '../../entities/room';
 import { IMessage } from '../../entities/message';
@@ -36,6 +42,7 @@ export class RoomsComponent implements OnInit {
   });
   state$ = this.stateSubject.asObservable();
   private searchSubject = new Subject<string>();
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   toggleCreate(value: boolean) {
     this.createToggle = value;
@@ -94,6 +101,8 @@ export class RoomsComponent implements OnInit {
         } as { pinned: IRoom[]; other: IRoom[] },
       );
 
+      this.scrollToTop();
+
       let desc =
         this.rooms.length > 0
           ? 'тотал ' + this.rooms.length + ' румов'
@@ -120,6 +129,7 @@ export class RoomsComponent implements OnInit {
         this.sortedRooms.pinned = [];
         this.sortedRooms.other = response.rooms;
         this.getMessages();
+        this.scrollToTop();
       },
       error: (error) => {
         console.error('Ошибка при поиске комнат:', error);
@@ -140,6 +150,12 @@ export class RoomsComponent implements OnInit {
 
   getLastMessage(roomID: number): IMessage | null {
     return this.messages.find((message) => message?.room_id === roomID);
+  }
+
+  scrollToTop(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = 0;
+    } catch (err) {}
   }
 
   ngOnInit(): void {
